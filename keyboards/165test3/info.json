@@ -1,0 +1,62 @@
+{
+    "manufacturer": "luantty2",
+    "keyboard_name": "165test",
+    "maintainer": "luantty2",
+    "bootloader": "stm32-dfu",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": false,
+        "extrakey": true,
+        "mousekey": false,
+        "nkro": true
+    },
+    "matrix_pins": {
+        "rows": ["NO_PIN","NO_PIN","NO_PIN","NO_PIN"],
+        "cols": ["NO_PIN","NO_PIN","NO_PIN"]
+    },
+    "processor": "STM32F411",
+    "url": "",
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x4567",
+        "vid": "0xFEED"
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                // { "label": "A", "matrix": [0, 5], "x": 0, "y": 0 },
+                // { "label": "B", "matrix": [0, 6], "x": 1, "y": 0 },
+                // { "label": "C", "matrix": [0, 7], "x": 2, "y": 0 },
+
+                // { "label": "7", "matrix": [0, 4], "x": 0, "y": 1 },
+                // { "label": "8", "matrix": [0, 0], "x": 1, "y": 1 },
+                // { "label": "9", "matrix": [1, 7], "x": 2, "y": 1 },
+
+                // { "label": "4", "matrix": [0, 2], "x": 0, "y": 2 },
+                // { "label": "5", "matrix": [0, 3], "x": 1, "y": 2 },
+                // { "label": "6", "matrix": [1, 5], "x": 2, "y": 2 },
+
+                // { "label": "1", "matrix": [0, 1], "x": 0, "y": 3 },
+                // { "label": "2", "matrix": [1, 2], "x": 1, "y": 3 },
+                // { "label": "3", "matrix": [1, 0], "x": 2, "y": 3 }
+
+                { "label": "A", "matrix": [0, 0], "x": 0, "y": 0 },
+                { "label": "B", "matrix": [0, 1], "x": 1, "y": 0 },
+                { "label": "C", "matrix": [0, 2], "x": 2, "y": 0 },
+
+                { "label": "7", "matrix": [1, 0], "x": 0, "y": 1 },
+                { "label": "8", "matrix": [1, 1], "x": 1, "y": 1 },
+                { "label": "9", "matrix": [1, 2], "x": 2, "y": 1 },
+
+                { "label": "4", "matrix": [2, 0], "x": 0, "y": 2 },
+                { "label": "5", "matrix": [2, 1], "x": 1, "y": 2 },
+                { "label": "6", "matrix": [2, 2], "x": 2, "y": 2 },
+
+                { "label": "1", "matrix": [3, 0], "x": 0, "y": 3 },
+                { "label": "2", "matrix": [3, 1], "x": 1, "y": 3 },
+                { "label": "3", "matrix": [3, 2], "x": 2, "y": 3 }
+            ]
+        }
+    }
+}
