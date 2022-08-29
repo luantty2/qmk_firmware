@@ -26,8 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MANUFACTURER Helix Lab
 #define PRODUCT H0320K0C
 
-#define USB_POLLING_INTERVAL_MS 1
-#define QMK_KEYS_PER_SCAN 4
+// #define USB_POLLING_INTERVAL_MS 1
+// #define QMK_KEYS_PER_SCAN 4
 
 /* key matrix size */
 #define MATRIX_ROWS 5
@@ -47,7 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     { GP29, GP2, GP3, GP4, GP5, GP6, GP7, GP9, GP23, GP22, GP21, GP20, GP19, GP18 }
 #define MATRIX_ROW_PINS \
     { GP24, GP25, GP26, GP27, GP28 }
-#define UNUSED_PINS
+// #define UNUSED_PINS
 
 // #define DEBUG_MATRIX_SCAN_RATE
 

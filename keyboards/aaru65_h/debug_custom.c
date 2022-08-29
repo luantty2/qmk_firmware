@@ -32,7 +32,7 @@ void debug_custom(void) {
     dprintf("   Keymap: %s\n", STR(QMK_KEYMAP));
     dprintf("./Keyboard\n");
     dprintf("   Polling Rate: %sms\n", STR(USB_POLLING_INTERVAL_MS));
-    dprintf("   Matrix Scan Rate: %d\n", get_matrix_scan_rate());
+    dprintf("   Matrix Scan Rate: %d\n", (int)get_matrix_scan_rate());
     dprintf("   NKRO: %d\n", keymap_config.nkro);
     dprintf("   Win Lock : %d\n", keymap_config.no_gui);
     dprintf("   Alt_Win Swap : %d\n", keymap_config.swap_lalt_lgui);
