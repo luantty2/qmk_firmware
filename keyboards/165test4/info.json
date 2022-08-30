@@ -1,6 +1,6 @@
 {
     "manufacturer": "luantty2",
-    "keyboard_name": "165test",
+    "keyboard_name": "165test4",
     "maintainer": "luantty2",
     "bootloader": "stm32-dfu",
     "features": {
@@ -9,7 +9,7 @@
         "console": false,
         "extrakey": true,
         "mousekey": false,
-        "nkro": false
+        "nkro": true
     },
     "matrix_pins": {
         "rows": ["NO_PIN","NO_PIN","NO_PIN","NO_PIN"],
@@ -19,7 +19,7 @@
     "url": "",
     "usb": {
         "device_version": "1.0.0",
-        "pid": "0x4567",
+        "pid": "0x4568",
         "vid": "0xFEED"
     },
     "layouts": {
