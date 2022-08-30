@@ -125,7 +125,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     // spi read:
     //  spi mode 1:Leading edge rising	Sample on trailing edge
 
-    spi_start(SPI_MATRIX_CHIP_SELECT_PIN, false, 3, 64);
+    spi_start(SPI_MATRIX_CHIP_SELECT_PIN, false, 0, 64);
     spi_receive((uint8_t*)driver_data, MATRIX_SHIFT_REGISTER_COUNT);
     spi_stop();
 
