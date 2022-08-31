@@ -24,7 +24,6 @@
 #define DEVICE_VER 0x0065
 #define MANUFACTURER Helix Lab
 #define PRODUCT AARU
-#define DESCRIPTION AARU Keyboard by Helix Lab
 
 /* key matrix size */
 #define MATRIX_ROWS 6
@@ -44,7 +43,6 @@
     { E7, F4, F3, F2, F0, E6 }
 #define MATRIX_COL_PINS \
     { F5, A5, A4, A3, A2, A1, A0, D2, D3, D4, D5, D6, D7, C2, C3, C4, C6, C7 }
-#define UNUSED_PINS
 
 /* COL2ROW, ROW2COL*/
 #define DIODE_DIRECTION COL2ROW
@@ -200,8 +198,8 @@
 //#define NO_ACTION_ONESHOT
 
 /* disable these deprecated features by default */
-#define NO_ACTION_MACRO
-#define NO_ACTION_FUNCTION
+// #define NO_ACTION_MACRO
+// #define NO_ACTION_FUNCTION
 
 /*
  * MIDI options
