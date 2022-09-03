@@ -3,6 +3,7 @@
 # WS2812_DRIVER = spi
 
 ENCODER_ENABLE = yes
+ENCODER_MAP_ENABLE = yes
 EEPROM_DRIVER = spi
 QUANTUM_LIB_SRC += \
 				i2c_master.c \
