@@ -4,6 +4,24 @@
     "productId": "3C02",
     "lighting": "none",
     "matrix": { "rows": 6, "cols": 27 },
+    "customKeycodes": [
+      {"name": "Zoom to Fit", "title": "Type Key: Shift + Z", "shortName": "Z_FIT"},
+      {"name": "Zoom In", "title": "Type Key: Command + =", "shortName": "Z_IN"},
+      {"name": "Zoom Out", "title": "Type Key: Command + -", "shortName": "Z_OUT"},
+      {"name": "Previous Edit", "title": "Type Key: ;", "shortName": "PRE_E"},
+      {"name": "Next Edit", "title": "Type Key: '", "shortName": "NXT_E"},
+      {"name": "Play/Pause", "title": "Type Key: L", "shortName": "PL_PS"},
+      {"name": "Stop", "title": "Type Key: K", "shortName": "STOP"},
+      {"name": "Reverse", "title": "Type Key: J", "shortName": "RVS"},
+      {"name": "Blade", "title": "Type Key: Command + B", "shortName": "BLADE"},
+      {"name": "Trim In", "title": "Type Key: Option + [", "shortName": "TM_IN"},
+      {"name": "Trim Out", "title": "Type Key: Option + ]", "shortName": "TM_OUT"},
+      {"name": "Insert", "title": "Type Key: W", "shortName": "INS"},
+      {"name": "Append", "title": "Type Key: E", "shortName": "APED"},
+      {"name": "Overwrite", "title": "Type Key: D", "shortName": "OVWTE"},
+      {"name": "Mark In", "title": "Type Key: I", "shortName": "MK_IN"},
+      {"name": "Mark Out", "title": "Type Key: O", "shortName": "MK_OUT"}
+    ], 
     "layouts": {
       "labels": [
     ],
@@ -249,7 +267,7 @@
             "c": "#aaaaaa",
             "w": 2.75
           },
-          "4,15",
+          "4,16",
           {
             "x": 1.25,
             "c": "#777777"

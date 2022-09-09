@@ -714,7 +714,7 @@ void rgb_indicator_effect_random_hue(bool state) {
 
 void rgb_indicator_led0_fade_inout(bool state) {
     if (state) {
-        aw2023_LED_switch(LED_OFF, LED_OFF, LED_OFF);
+        // aw2023_LED_switch(LED_OFF, LED_OFF, LED_OFF);
         aw2023_LED_pwm(LED0, 0x00);
         aw2023_LED_timing(LED0, T0_UNSET, T1_130MS, T2_UNSET, T3_380MS, T4_UNSET, REPEAT_UNSET);
         aw2023_LED_config(LED0, FADEIN_ENABLE, FADEOUT_ENABLE, LED_MODE_MANUAL, RGB_INDICATOR_GLOBAL_CURRENT);
@@ -733,7 +733,7 @@ void rgb_indicator_led0_fade_inout(bool state) {
 
 void rgb_indicator_led1_fade_inout(bool state) {
     if (state) {
-        aw2023_LED_switch(LED_OFF, LED_OFF, LED_OFF);
+        // aw2023_LED_switch(LED_OFF, LED_OFF, LED_OFF);
         aw2023_LED_pwm(LED1, 0x00);
         aw2023_LED_timing(LED1, T0_UNSET, T1_130MS, T2_UNSET, T3_380MS, T4_UNSET, REPEAT_UNSET);
         aw2023_LED_config(LED1, FADEIN_ENABLE, FADEOUT_ENABLE, LED_MODE_MANUAL, RGB_INDICATOR_GLOBAL_CURRENT);
@@ -752,7 +752,7 @@ void rgb_indicator_led1_fade_inout(bool state) {
 
 void rgb_indicator_led2_fade_inout(bool state) {
     if (state) {
-        aw2023_LED_switch(LED_OFF, LED_OFF, LED_OFF);
+        // aw2023_LED_switch(LED_OFF, LED_OFF, LED_OFF);
         aw2023_LED_pwm(LED2, 0x00);
         aw2023_LED_timing(LED2, T0_UNSET, T1_130MS, T2_UNSET, T3_380MS, T4_UNSET, REPEAT_UNSET);
         aw2023_LED_config(LED2, FADEIN_ENABLE, FADEOUT_ENABLE, LED_MODE_MANUAL, RGB_INDICATOR_GLOBAL_CURRENT);

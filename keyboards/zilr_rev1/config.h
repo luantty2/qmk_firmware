@@ -3,6 +3,8 @@
 
 #pragma once
 
+// #define DEBUG_MATRIX_SCAN_RATE
+
 // #define RGBLIGHT_ANIMATIONS
 
 // #define RGBLED_NUM 3
@@ -28,6 +30,8 @@
 
 #define ENCODERS_PAD_A { A8, C1, A2 }
 #define ENCODERS_PAD_B { A9, C0, A3 }
+#define ENCODER_RESOLUTIONS { 4, 4, 2 }
+
 
 #define EXTERNAL_EEPROM_SPI_SLAVE_SELECT_PIN A4
 #define EXTERNAL_EEPROM_SPI_CLOCK_DIVISOR 4

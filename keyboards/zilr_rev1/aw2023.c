@@ -22,7 +22,7 @@ void aw2023_init(void) {
     /*set GCR1.CHIPEN=1 to enable the device*/
     uint8_t config = 0x01;
     i2c_writeReg(AW2023_ADDRESS, GCR1, &config, 1, AW2023_TIMEOUT);
-    aw2023_limit_current(IMAX_10MA);
+    aw2023_limit_current(IMAX_30MA);
 }
 
 void aw2023_reset(void) {
