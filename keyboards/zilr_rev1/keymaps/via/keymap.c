@@ -77,7 +77,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 // midi_send_cc(&midi_device, midi_config.channel, 24, MIDI_CC_ON);
                 tap_code16(S(KC_Z));
+                // host_consumer_send(0x221);
             }
+            // else {
+            //     host_consumer_send(0);
+            // }
             return true;
         case Z_IN:
             if (record->event.pressed) {
