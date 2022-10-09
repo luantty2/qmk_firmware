@@ -1,0 +1,17 @@
+{
+    "manufacturer": "helixlab",
+    "keyboard_name": "aaru65",
+    "maintainer": "luantty2",
+    "bootloader": "rp2040",
+    "processor": "RP2040",
+    "url": "https://helix.site",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": true,
+        "extrakey": true,
+        "mousekey": true,
+        "midi": true,
+        "nkro": true
+    }
+}
