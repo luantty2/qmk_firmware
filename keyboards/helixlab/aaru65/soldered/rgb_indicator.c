@@ -76,12 +76,6 @@ void rgb_indicator_enable_toggle(void) {
         rgb_indicator_disable();
 }
 
-void rgb_indicator_factory_test_runner(void) {
-    if (!palReadLine(RGB_INDICATOR_TEST_PIN)) {
-        rgb_indicator_factory_test();
-    }
-}
-
 void rgb_indicator_factory_test(void) {
     uint32_t timer_now = timer_read();
     if (TIMER_DIFF_32(timer_now, rgb_indicator_factory_test_timer) >= 1500) {
@@ -99,6 +93,12 @@ void rgb_indicator_factory_test(void) {
         togglePin(RGB_INDICATOR_SELECT_PIN);
         rgb_indicator_factory_test_timer = timer_now;
         rgb_indicator_state              = true;
+    }
+}
+
+void rgb_indicator_factory_test_runner(void) {
+    if (!palReadLine(RGB_INDICATOR_TEST_PIN)) {
+        rgb_indicator_factory_test();
     }
 }
 
@@ -149,7 +149,6 @@ void rgb_indicator_off(void) {
                 rgb_indicator_effect_gradient(false);
                 break;
             case 6:
-                // rgb_indicator_effect_blink(false);
                 rgb_indicator_effect_random_hue(false);
                 break;
             default:

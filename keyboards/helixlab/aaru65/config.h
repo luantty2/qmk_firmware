@@ -30,7 +30,6 @@
 #    define DRIVER_ADDR_2 0b1010001
 #    define DRIVER_SYNC_1 0b01
 #    define DRIVER_SYNC_2 0b10
-
 #    define DRIVER_COUNT 2
 #    define DRIVER_1_LED_TOTAL 54
 #    define DRIVER_2_LED_TOTAL 9

@@ -88,10 +88,7 @@ const is31_led PROGMEM g_is31_leds[DRIVER_LED_TOTAL] = {
 
     {1, B_15, A_15, C_15}, {1, B_14, A_14, C_14}, {1, B_13, A_13, C_13}, {1, B_7, A_7, C_7},    {1, B_9, A_9, C_9},    {1, B_8, A_8, C_8},    {1, B_10, A_10, C_10}, {1, B_11, A_11, C_11}, {1, B_12, A_12, C_12}};
 
-bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
-    if (!rgb_matrix_indicators_advanced_user(led_min, led_max)) {
-        return false;
-    }
+void rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
     if (host_keyboard_led_state().caps_lock) {
         HSV hsv = rgb_matrix_get_hsv();
         RGB rgb;
@@ -99,6 +96,5 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
         rgb   = hsv_to_rgb(hsv);
         RGB_MATRIX_INDICATOR_SET_COLOR(28, rgb.r, rgb.g, rgb.b);
     }
-    return true;
 }
 #endif

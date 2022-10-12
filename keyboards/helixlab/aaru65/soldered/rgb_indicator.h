@@ -48,7 +48,6 @@ void rgb_indicator_enable(void);
 void rgb_indicator_disable(void);
 void rgb_indicator_enable_toggle(void);
 void rgb_indicator_factory_test_runner(void);
-void rgb_indicator_factory_test(void);
 void rgb_indicator_toggle(bool your_led_state);
 void rgb_indicator_select(void);
 void rgb_indicator_select_toggle(void);

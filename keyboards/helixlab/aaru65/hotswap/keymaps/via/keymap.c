@@ -8,15 +8,11 @@
 
 enum keycodes { 
     DEVICE_INFO = USER00,
-#ifdef RGB_MATRIX_ENABLE
     RGB_MATRIX_INDICATOR_ONLY,
-#endif
-#ifdef FADER_ENABLE
     FADER_REVERSE, 
     FADER_CHI, 
     FADER_CCI, 
     FADER_ENABLE_TOGGLE, 
-#endif
 };
 
 // Defines names for use in layer keycodes and the keymap
@@ -62,15 +58,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
-#ifdef RGB_MATRIX_ENABLE
             case RGB_MATRIX_INDICATOR_ONLY:
             if (record->event.pressed) {
                 rgb_matrix_mode(RGB_MATRIX_CUSTOM_indicator_only);
             } else {
             }
             return false;
-#endif
-#ifdef FADER_ENABLE
         case FADER_REVERSE:
             if (record->event.pressed) {
                 fader_reverse();
@@ -103,7 +96,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
-#endif
         default:
             return true; // Process all other keycodes normally
     }

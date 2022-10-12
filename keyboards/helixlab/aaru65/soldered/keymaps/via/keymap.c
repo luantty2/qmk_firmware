@@ -14,20 +14,16 @@ enum layer_names { _BASE, _FN };
 
 enum keycodes {
     DEVICE_INFO = USER00, 
-#ifdef RGB_INDICATOR_ENABLE
     RGB_INDICATOR_HUI, 
     RGB_INDICATOR_SAI, 
     RGB_INDICATOR_VAI, 
     RGB_INDICATOR_MODE, 
     RGB_INDICATOR_SELECT, 
     RGB_INDICATOR_ENABLE_TOGGLE, 
-#endif
-#ifdef FADER_ENABLE
     FADER_REVERSE, 
     FADER_CHI, 
     FADER_CCI, 
     FADER_ENABLE_TOGGLE, 
-#endif
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -70,7 +66,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
-#ifdef RGB_INDICATOR_ENABLE
         case RGB_INDICATOR_HUI:
             if (record->event.pressed) {
                 if (get_mods() & MOD_BIT(KC_LSHIFT) || get_mods() & MOD_BIT(KC_RSHIFT)) {
@@ -119,8 +114,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
-#endif
-#ifdef FADER_ENABLE
         case FADER_REVERSE:
             if (record->event.pressed) {
                 fader_reverse();
@@ -153,7 +146,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
-#endif
         default:
             return true; // Process all other keycodes normally
     }
