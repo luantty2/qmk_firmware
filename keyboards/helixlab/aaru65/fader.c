@@ -70,7 +70,7 @@ void fader_reverse(void) {
         return;
 }
 
-void fader_setchannel(uint8_t channel) {
+void fader_set_channel(uint8_t channel) {
     if (fader_config.enable) {
         fader_config.channel = channel;
         eeconfig_update_fader();
@@ -79,7 +79,7 @@ void fader_setchannel(uint8_t channel) {
         return;
 }
 
-void fader_setcc(uint8_t cc) {
+void fader_set_cc(uint8_t cc) {
     if (fader_config.enable) {
         fader_config.cc = cc;
         eeconfig_update_fader();
@@ -96,7 +96,7 @@ void fader_increase_channel(void) {
         } else {
             channel += 1;
         }
-        fader_setchannel(channel);
+        fader_set_channel(channel);
     } else
         return;
 }
@@ -109,7 +109,7 @@ void fader_decrease_channel(void) {
         } else {
             channel -= 1;
         }
-        fader_setchannel(channel);
+        fader_set_channel(channel);
     } else
         return;
 }
@@ -117,12 +117,12 @@ void fader_decrease_channel(void) {
 void fader_increase_cc(void) {
     if (fader_config.enable) {
         uint8_t cc = fader_config.cc;
-        if (fader_config.cc >= 127) {
+        if (fader_config.cc >= 0x7F) {
             cc = 0;
         } else {
             cc += 1;
         }
-        fader_setcc(cc);
+        fader_set_cc(cc);
     } else
         return;
 }
@@ -131,17 +131,16 @@ void fader_decrease_cc(void) {
     if (fader_config.enable) {
         uint8_t cc = fader_config.cc;
         if (fader_config.cc <= 0) {
-            cc = 127;
+            cc = 0x7F;
         } else {
             cc -= 1;
         }
-        fader_setcc(cc);
+        fader_set_cc(cc);
     } else
         return;
 }
 
 uint8_t fader_get_val(void) {
-    // return midi_cc_value;
     uint8_t adc_value = ads1100_read() >> 8;
     if (!fader_config.reverse) {
         return 0x7F - adc_value;
@@ -179,10 +178,14 @@ void fader_run(MidiDevice* device) {
                     rgb_matrix_sethsv(hsv.h, hsv.s, hsv.v);
                 }
             } else {
-                if (midi_cc_value != ADC_ERROR) midi_send_cc(device, fader_config.channel, fader_config.cc, midi_cc_value);
+                if (midi_cc_value != ADC_ERROR) {
+                    midi_send_cc(device, fader_config.channel, fader_config.cc, midi_cc_value);
+                }
             }
 #else
-            if (midi_cc_value != ADC_ERROR) midi_send_cc(device, fader_config.channel, fader_config.cc, midi_cc_value);
+            if (midi_cc_value != ADC_ERROR) {
+                midi_send_cc(device, fader_config.channel, fader_config.cc, midi_cc_value);
+            }
 #endif
         }
         fader_read_timer = timer_now;

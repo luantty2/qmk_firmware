@@ -4,16 +4,16 @@
 
 #include "config_common.h"
 
+#define RP2040_FLASH_IS25LP080
+
 #define I2C1_SDA_PIN GP0
 #define I2C1_SCL_PIN GP1
 #define I2C_DRIVER I2CD1
 
-#define SPI_DRIVER SPID1
 #define SPI_SCK_PIN GP10
 #define SPI_MOSI_PIN GP11
 #define SPI_MISO_PIN GP12
-
-#define RP2040_FLASH_IS25LP080
+#define SPI_DRIVER SPID1
 
 #define EXTERNAL_EEPROM_SPI_SLAVE_SELECT_PIN GP13
 #define EXTERNAL_EEPROM_SPI_CLOCK_DIVISOR 8
@@ -21,8 +21,8 @@
 #define EXTERNAL_EEPROM_PAGE_SIZE 16
 
 #ifdef RGB_MATRIX_ENABLE
-#    define RGB_DISABLE_TIMEOUT 300000          // number of milliseconds to wait until rgb automatically turns off
-#    define RGB_DISABLE_WHEN_USB_SUSPENDED true // turn off effects when suspended
+#    define RGB_DISABLE_TIMEOUT 300000
+#    define RGB_DISABLE_WHEN_USB_SUSPENDED true
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255
 #    define RGB_MATRIX_STARTUP_VAL 200
 #    define RGB_MATRIX_STARTUP_SPD 64

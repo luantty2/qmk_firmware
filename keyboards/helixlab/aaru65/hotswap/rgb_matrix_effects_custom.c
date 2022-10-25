@@ -5,7 +5,7 @@
 
 uint8_t         target_v       = 0;
 uint8_t         current_v      = 0;
-static uint32_t fade_in_timer  = 0;
+static uint32_t fade_timer  = 0;
 bool            fade_completed = false;
 
 void rgb_matrix_set_target_v(void) {
@@ -14,13 +14,13 @@ void rgb_matrix_set_target_v(void) {
 
 bool rgb_matrix_fade_in(void) {
     uint32_t timer_now = timer_read();
-    if (TIMER_DIFF_32(timer_now, fade_in_timer) <= FADE_IN_LENGTH) {
+    if (TIMER_DIFF_32(timer_now, fade_timer) <= FADE_LENGTH) {
         rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), current_v);
         current_v += 1;
         if (current_v == target_v) {
             return true;
         }
-        fade_in_timer = timer_now;
+        fade_timer = timer_now;
         return false;
     }
     return true;

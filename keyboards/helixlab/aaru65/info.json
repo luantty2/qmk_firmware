@@ -1,6 +1,6 @@
 {
     "manufacturer": "helixlab",
-    "keyboard_name": "aaru65",
+    "keyboard_name": "AARU65",
     "maintainer": "luantty2",
     "bootloader": "rp2040",
     "processor": "RP2040",
@@ -10,8 +10,8 @@
         "command": false,
         "console": true,
         "extrakey": true,
-        "mousekey": true,
         "midi": true,
+        "mousekey": true,
         "nkro": true
     }
 }
