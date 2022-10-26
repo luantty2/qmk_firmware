@@ -64,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     |Shi||| ||Z ||X ||C ||V ||B ||N ||M ||< ||> ||? ||Shift||↑ |
     |___||__||__||__||__||__||__||__||__||__||__||__||_____||__|
      ___  ___  ___  _______________________  ___  ___    __  __  __
-    |Ctr||Win||Alt||Space                  ||Alt||Fn |  |← ||↓ ||→ |
+    |Ctr||Alt||Win||Space                  ||Win||Fn |  |← ||↓ ||→ |
     |___||___||___||_______________________||___||___|  |__||__||__|
     */
     [_BASE] = LAYOUT_all(
@@ -72,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I, KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
         KC_CAPS, KC_A,    KC_S,    KC_D, KC_F, KC_G,   KC_H, KC_J, KC_K, KC_L,    KC_SCLN, KC_QUOT, KC_NUHS, KC_ENT,
         KC_LSFT, KC_NUBS, KC_Z,    KC_X, KC_C, KC_V,   KC_B, KC_N, KC_M, KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, KC_UP,
-        KC_LCTL, KC_LGUI, KC_LALT,                     KC_SPC,                    KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT
+        KC_LCTL, KC_LALT, KC_LGUI,                     KC_SPC,                    KC_LGUI, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT
         ),
     [_FN] = LAYOUT_all(
         _______, KC_BRID, KC_BRIU, M_EXP,   M_SEAR,  M_DICT,  M_DND,   KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,
