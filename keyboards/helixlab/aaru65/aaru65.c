@@ -41,7 +41,7 @@ void keyboard_post_init_kb(void) {
     fader_init();
 #endif
 #ifdef RGB_MATRIX_ENABLE
-    rgb_matrix_set_target_v();
+    rgb_matrix_set_target_val();
 #endif
     wait_ms(100);
     keyboard_post_init_user();

@@ -16,6 +16,11 @@ enum keycodes {
     FADER_CHANNEL_INCREASE,
     FADER_CC_INCREASE,
     FADER_ENABLE_TOGGLE,
+    MACOS_EXPOSE_VIEW,
+    MACOS_LAUNCHPAD,
+    MACOS_SEARCH,
+    MACOS_DICTATION,
+    MACOS_DO_NOT_DISTURB,
 };
 
 // Keycodes aliases
@@ -25,6 +30,11 @@ enum keycodes {
 #define FAD_CHI  FADER_CHANNEL_INCREASE
 #define FAD_CCI  FADER_CC_INCREASE
 #define FAD_TOG  FADER_ENABLE_TOGGLE
+#define M_EXP    MACOS_EXPOSE_VIEW
+#define M_LPAD   MACOS_LAUNCHPAD
+#define M_SEAR   MACOS_SEARCH
+#define M_DICT   MACOS_DICTATION
+#define M_DND    MACOS_DO_NOT_DISTURB
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
@@ -41,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     |Shift  ||Z ||X ||C ||V ||B ||N ||M ||< ||> ||? ||Shift||↑ |
     |_______||__||__||__||__||__||__||__||__||__||__||_____||__|
      ___  ___  ___  _______________________  ___  ___    __  __  __
-    |Ctr||Win||Alt||Space                  ||Alt||Fn |  |← ||↓ ||→ |
+    |Ctr||Alt||Win||Space                  ||Win||Fn |  |← ||↓ ||→ |
     |___||___||___||_______________________||___||___|  |__||__||__|
     */
     [_BASE] = LAYOUT(
@@ -49,10 +59,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E, KC_R, KC_T, KC_Y,   KC_U, KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
         KC_CAPS, KC_A,    KC_S,    KC_D, KC_F, KC_G, KC_H,   KC_J, KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,
         KC_LSFT, KC_Z,    KC_X,    KC_C, KC_V, KC_B, KC_N,   KC_M, KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, KC_UP,
-        KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT
+        KC_LCTL, KC_LALT, KC_LGUI,                   KC_SPC,                KC_RGUI, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT
         ),
     [_FN] = LAYOUT(
-        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,    KC_F8,   KC_F9,   KC_F10,  _______, _______, _______,
+        _______, KC_BRID, KC_BRIU, M_EXP,   M_SEAR,  M_DICT,  M_DND,   KC_MPRV,  KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU, _______,
         _______, RGB_TOG, RGB_MOD, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI, IND_ONLY, D_INFO,  _______, _______, _______, _______, _______,
         _______, FAD_TOG, FAD_REV, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, NK_TOGG, _______,  _______, _______, _______, _______, KC_PGUP,
@@ -106,6 +116,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
+        case MACOS_EXPOSE_VIEW:
+            if (record->event.pressed) {
+                host_consumer_send(0x29F);
+            } else {
+                host_consumer_send(0);
+            }
+            return false;
+        case MACOS_LAUNCHPAD:
+            if (record->event.pressed) {
+                host_consumer_send(0x2A0);
+            } else {
+                host_consumer_send(0);
+            }
+            return false;
+        case MACOS_SEARCH:
+            if (record->event.pressed) {
+                host_consumer_send(0x221);
+            } else {
+                host_consumer_send(0);
+            }
+            return false;
+        case MACOS_DICTATION:
+            if (record->event.pressed) {
+                host_consumer_send(0xCF);
+            } else {
+                host_consumer_send(0);
+            }
+            return false;
+        case MACOS_DO_NOT_DISTURB:
+            if (record->event.pressed) {
+                host_system_send(0x9B);
+            } else {
+                host_system_send(0);
+            }
         default:
             return true; // Process all other keycodes normally
     }

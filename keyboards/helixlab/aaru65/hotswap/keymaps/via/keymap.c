@@ -18,7 +18,7 @@ enum keycodes {
     FADER_ENABLE_TOGGLE,
 };
 
-// keycodes aliases
+// Keycodes aliases
 #define D_INFO   DEVICE_INFO
 #define IND_ONLY RGB_MATRIX_INDICATOR_ONLY
 #define FAD_REV  FADER_REVERSE
@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, RGB_TOG, RGB_MOD, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI, IND_ONLY, D_INFO,  _______, _______, _______, _______, _______,
         _______, FAD_TOG, FAD_REV, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, NK_TOGG, _______,  _______, _______, _______, _______, KC_PGUP,
-        KC_LCTL, GUI_TOG, AG_TOGG,                            _______,                    _______, _______, _______, KC_PGDN, _______
+        CL_TOGG, GUI_TOG, AG_TOGG,                            _______,                    _______, _______, _______, KC_PGDN, _______
         ),
     [2] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, 
@@ -82,7 +82,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
-            case RGB_MATRIX_INDICATOR_ONLY:
+        case RGB_MATRIX_INDICATOR_ONLY:
             if (record->event.pressed) {
                 rgb_matrix_mode(RGB_MATRIX_CUSTOM_indicator_only);
             } else {

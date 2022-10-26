@@ -6,5 +6,5 @@
 
 #define FADE_LENGTH 500
 
-void rgb_matrix_set_target_v(void);
+void rgb_matrix_set_target_val(void);
 bool rgb_matrix_fade_in(void);

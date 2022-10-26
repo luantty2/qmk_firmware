@@ -26,7 +26,7 @@ enum keycodes {
     FADER_ENABLE_TOGGLE,
 };
 
-// keycodes aliases
+// Keycodes aliases
 #define D_INFO  DEVICE_INFO
 #define IND_HUI RGB_INDICATOR_HUE_INCREASE
 #define IND_SAI RGB_INDICATOR_SATURATION_INCREASE
