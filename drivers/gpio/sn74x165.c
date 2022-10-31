@@ -19,11 +19,13 @@
 #include "gpio.h"
 
 spi_status_t res;
+uint8_t      readStates[SN74X165_LENGTH];
+#ifdef CONSOLE_ENABLE
+#    include "debug.h"
+#    include "timer.h"
+uint32_t timer_now;
+#endif
 
-/* get length */
-uint8_t sn74x165_length(void) {
-    return SN74X165_LENGTH;
-}
 /*
     init first
 */
@@ -43,6 +45,20 @@ bool sn74x165_spi_receive(uint8_t* out) {
         spi_stop();
         return false;
     }
+    memcpy(readStates, out, sizeof(out));
+#ifdef CONSOLE_ENABLE
+    if (timer_elapsed32(timer_now) >= 1000 && debug_sn74x165) {
+        dprint("sn74x165 reads in BIN: ");
+        for (int current = (SN74X165_LENGTH - 1); current >= 0; current--) {
+            debug_bin_reverse8(readStates[current]);
+            if (current > 0) {
+                dprint(",");
+            }
+        }
+        dprint("\n");
+        timer_now = timer_read32();
+    }
+#endif
     spi_stop();
     return true;
 }
