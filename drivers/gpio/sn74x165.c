@@ -19,8 +19,6 @@
 #include "gpio.h"
 
 spi_status_t res;
-uint8_t      pinStates[SN74X165_LENGTH];
-typedef enum { Low = 0, High = 1 } pinState;
 
 /* get length */
 uint8_t sn74x165_length(void) {
