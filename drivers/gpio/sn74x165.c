@@ -17,26 +17,24 @@
 #include "sn74x165.h"
 #include "spi_master.h"
 #include "gpio.h"
+#include "debug.h"
+#include "wait.h"
 
 spi_status_t res;
-uint8_t      readStates[SN74X165_LENGTH];
-#ifdef CONSOLE_ENABLE
-#    include "debug.h"
-#    include "timer.h"
-uint32_t timer_now;
-#endif
 
-/*
-    init first
-*/
 void sn74x165_init(void) {
+    setPinOutput(SN74X165_LATCH_PIN);
+    writePinHigh(SN74X165_LATCH_PIN);
     spi_init();
 }
 
 bool sn74x165_spi_receive(uint8_t* out) {
-    sn74x165_pulsePinLow(SN74X165_LATCH_PIN);
+    writePinLow(SN74X165_LATCH_PIN);
+    wait_us(30);
+    writePinHigh(SN74X165_LATCH_PIN);
+
     if (!spi_start(SN74X165_SPI_SLAVE_SELECT_PIN, SN74X165_SPI_LSBFIRST, SN74X165_SPI_MODE, SN74X165_SPI_CLOCK_DIVISOR)) {
-        uprint("sn74x165 spi can't start \n");
+        dprint("sn74x165 spi can't start \n");
         spi_stop();
         return false;
     }
@@ -45,26 +43,6 @@ bool sn74x165_spi_receive(uint8_t* out) {
         spi_stop();
         return false;
     }
-    memcpy(readStates, out, sizeof(out));
-#ifdef CONSOLE_ENABLE
-    if (timer_elapsed32(timer_now) >= 1000 && debug_sn74x165) {
-        dprint("sn74x165 reads in BIN: ");
-        for (int current = (SN74X165_LENGTH - 1); current >= 0; current--) {
-            debug_bin_reverse8(readStates[current]);
-            if (current > 0) {
-                dprint(",");
-            }
-        }
-        dprint("\n");
-        timer_now = timer_read32();
-    }
-#endif
     spi_stop();
     return true;
-}
-
-void sn74x165_pulsePinLow(uint8_t pin) {
-    writePinHigh(pin);
-    matrix_io_delay();
-    writePinLow(pin);
 }

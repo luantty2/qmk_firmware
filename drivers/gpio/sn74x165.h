@@ -19,7 +19,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "spi_master.h"
+// #include "spi_master.h"
 
 /**
  * Driver for 74x165 8-bit serial or parallel-in/serial-out shift registers.
@@ -88,10 +88,3 @@ void sn74x165_init(void);
     Read values.
 */
 bool sn74x165_spi_receive(uint8_t* out);
-
-/*
-    Set a pin state to high, then set it to low.
-*/
-void sn74x165_pulsePinLow(uint8_t pin);
-
-bool debug_sn74x165;
