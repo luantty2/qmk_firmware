@@ -10,7 +10,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * │ A │
      * └───┘
      */
-    [0] = LAYOUT(DICTATION, KC_B, KC_C, KC_7, KC_8, KC_9, KC_4, KC_UP, KC_6, KC_LEFT, KC_DOWN, KC_RGHT)};
+    [0] = LAYOUT(TG(1), KC_B, KC_C, KC_7, KC_8, KC_9, KC_4, KC_UP, KC_6, KC_LEFT, KC_DOWN, KC_RGHT),
+    [1] = LAYOUT(TG(0), KC_B, KC_C, KC_7, KC_8, KC_9, KC_4, KC_WH_U, KC_6, KC_BTN2, KC_WH_D, KC_BTN3)};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {

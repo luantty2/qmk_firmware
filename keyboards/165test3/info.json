@@ -8,7 +8,7 @@
         "command": false,
         "console": false,
         "extrakey": true,
-        "mousekey": false,
+        "mousekey": true,
         "nkro": false
     },
     "matrix_pins": {
