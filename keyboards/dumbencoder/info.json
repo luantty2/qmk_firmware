@@ -1,0 +1,33 @@
+{
+    "manufacturer": "weimao",
+    "keyboard_name": "dumbencoder",
+    "maintainer": "weimao",
+    "bootloader": "stm32-dfu",
+    "diode_direction": "COL2ROW",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": true,
+        "extrakey": true,
+        "mousekey": true,
+        "nkro": true
+    },
+    "matrix_pins": {
+        "cols": ["B3"],
+        "rows": ["B4"]
+    },
+    "processor": "STM32F411",
+    "url": "",
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x0000",
+        "vid": "0x3344"
+    },
+    "layouts": {
+        "LAYOUT_ortho_1x1": {
+            "layout": [
+                { "matrix": [0, 0], "x": 0, "y": 0 }
+            ]
+        }
+    }
+}
