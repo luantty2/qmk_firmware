@@ -1,0 +1,1 @@
+SRC += aw2023.c rgb_indicator.c
