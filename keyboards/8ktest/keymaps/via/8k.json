@@ -1,0 +1,15 @@
+{
+    "name": "8ktest",
+    "vendorId": "0xFEED",
+    "productId": "0x45FA",
+    "lighting": "none",
+    "matrix": { "rows": 1, "cols": 1 },
+    "layouts": {
+
+      "keymap": [
+        [
+          "0,0"
+        ]
+      ]
+    }
+  }
