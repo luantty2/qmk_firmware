@@ -2,7 +2,7 @@
     "manufacturer": "luantty2",
     "keyboard_name": "165test",
     "maintainer": "luantty2",
-    "bootloader": "stm32duino",
+    "bootloader": "tinyuf2",
     "features": {
         "bootmagic": true,
         "command": false,
