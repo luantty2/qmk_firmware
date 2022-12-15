@@ -1,1 +1,1 @@
-SRC += aw2023.c rgb_indicator.c
+SRC += aw2023.c rgb_indicator.c shuttle.c

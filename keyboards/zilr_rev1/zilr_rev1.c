@@ -4,10 +4,14 @@
 #include "zilr_rev1.h"
 #include "rgb_indicator.h"
 #include "rgb_indicator_modes.h"
+#include "timer.h"
+#include "shuttle.h"
+
+static uint32_t key_timer;
 
 void keyboard_post_init_kb(void) {
     rgb_indicator_init();
-    // rgb_indicator_on();
+    shuttle_init();
 }
 
 bool led_update_kb(led_t led_state) {
@@ -33,4 +37,24 @@ bool led_update_kb(led_t led_state) {
     }
     return res;
     // #endif
+}
+
+void shuttle_run(void) {
+    uint32_t timer_now = timer_read();
+    if (!shuttle_in_deadzone()) {
+        if (TIMER_DIFF_32(timer_now, key_timer) >= shuttle_get_timer()) {
+            shuttle_behavior();
+            key_timer = timer_now;
+        }
+    }
+}
+
+
+void housekeeping_task_kb(void) {
+    // const bool = shuttle_changed = shuttle_read();
+    shuttle_read();
+    // if (shuttle_changed) {
+    //     last_shuttle_activity_trigger();
+    // }
+    shuttle_run();
 }
