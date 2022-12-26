@@ -5,7 +5,7 @@
 #include "rgb_indicator.h"
 #include "rgb_indicator_modes.h"
 #include "timer.h"
-#include "shuttle.h"
+#include "shuttle_rev2.h"
 
 static uint32_t key_timer;
 

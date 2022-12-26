@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 // #include "dumbencoder.h"
-#include "shuttle.h"
+#include "shuttle_rev2.h"
 #include "timer.h"
 
 static uint32_t key_timer;

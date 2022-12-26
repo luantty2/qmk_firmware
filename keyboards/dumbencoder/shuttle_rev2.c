@@ -16,7 +16,7 @@
  */
 
 #include "quantum.h"
-#include "shuttle.h"
+#include "shuttle_rev2.h"
 #include "print.h"
 #include "action.h"
 
@@ -33,12 +33,12 @@ static int8_t shuttle_LUT[] = {0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 
 static uint8_t shuttle_state  = 0;
 static int8_t  shuttle_pulses = 0;
 
-static uint8_t shuttle_value = 0;
+// static uint8_t shuttle_value = 0;
 
-static uint8_t  shuttle_pos   = 1;
+static int16_t  shuttle_pos   = 1;
 static uint16_t current_timer = TIMER_NO;
 
-uint8_t shuttle_get_pos(void) {
+int16_t shuttle_get_pos(void) {
     return shuttle_pos;
 }
 
@@ -69,10 +69,8 @@ uint8_t shuttle_get_pos(void) {
 //     return false;
 // }
 
-
-
 bool shuttle_in_deadzone(void) {
-    if (shuttle_pos == 1 || shuttle_pos == 2 || shuttle_pos == 29 || shuttle_pos == 30) {
+    if (shuttle_pos == 1 || shuttle_pos == 2 || shuttle_pos == -1 || shuttle_pos == -2) {
         return true;
     } else {
         return false;
@@ -91,32 +89,32 @@ void shuttle_set_timer(void) {
     switch (shuttle_get_pos()) {
         case 1:
         case 2:
-        case 29:
-        case 30:
+        case -1:
+        case -2:
             current_timer = TIMER_NO;
             break;
         case 3:
         case 4:
-        case 27:
-        case 28:
+        case -3:
+        case -4:
             current_timer = TIMER_1;
             break;
         case 5:
         case 6:
-        case 25:
-        case 26:
+        case -5:
+        case -6:
             current_timer = TIMER_2;
             break;
         case 7:
         case 8:
-        case 23:
-        case 24:
+        case -7:
+        case -8:
             current_timer = TIMER_3;
             break;
         case 9:
         case 10:
-        case 21:
-        case 22:
+        case -9:
+        case -10:
             break;
             current_timer = TIMER_4;
         case 11:
@@ -124,11 +122,11 @@ void shuttle_set_timer(void) {
         case 13:
         case 14:
         case 15:
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
+        case -11:
+        case -12:
+        case -13:
+        case -14:
+        case -15:
             current_timer = TIMER_5;
             break;
         default:
@@ -145,8 +143,8 @@ void shuttle_behavior(void) {
     switch (shuttle_get_pos()) {
         case 1:
         case 2:
-        case 29:
-        case 30:
+        case -1:
+        case -2:
             break;
         case 3:
         case 4:
@@ -158,8 +156,8 @@ void shuttle_behavior(void) {
             wait_ms(2);
             unregister_code(KC_RIGHT);
             break;
-        case 27:
-        case 28:
+        case -3:
+        case -4:
             register_code(KC_LEFT);
             wait_ms(2);
             unregister_code(KC_LEFT);
@@ -170,8 +168,8 @@ void shuttle_behavior(void) {
             wait_ms(2);
             unregister_code(KC_RIGHT);
             break;
-        case 25:
-        case 26:
+        case -5:
+        case -6:
             register_code(KC_LEFT);
             wait_ms(2);
             unregister_code(KC_LEFT);
@@ -182,8 +180,8 @@ void shuttle_behavior(void) {
             wait_ms(2);
             unregister_code(KC_RIGHT);
             break;
-        case 23:
-        case 24:
+        case -7:
+        case -8:
             register_code(KC_LEFT);
             wait_ms(2);
             unregister_code(KC_LEFT);
@@ -194,8 +192,8 @@ void shuttle_behavior(void) {
             wait_ms(2);
             unregister_code(KC_RIGHT);
             break;
-        case 21:
-        case 22:
+        case -9:
+        case -10:
             register_code(KC_LEFT);
             wait_ms(2);
             unregister_code(KC_LEFT);
@@ -210,11 +208,11 @@ void shuttle_behavior(void) {
             wait_ms(5);
             unregister_code16(S(KC_RIGHT));
             break;
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
+        case -11:
+        case -12:
+        case -13:
+        case -14:
+        case -15:
             // tap_code16(S(KC_LEFT));
             register_code16(S(KC_LEFT));
             wait_ms(5);
@@ -226,7 +224,7 @@ void shuttle_behavior(void) {
 }
 
 void shuttle_pos_step(void) {
-    if (shuttle_pos >= 30) {
+    if (shuttle_pos == -1) {
         shuttle_pos = 1;
     } else {
         shuttle_pos += 1;
@@ -234,8 +232,8 @@ void shuttle_pos_step(void) {
 }
 
 void shuttle_pos_reverse(void) {
-    if (shuttle_pos <= 1) {
-        shuttle_pos = 30;
+    if (shuttle_pos == 1) {
+        shuttle_pos = -1;
     } else {
         shuttle_pos -= 1;
     }
@@ -261,7 +259,7 @@ static bool shuttle_update(uint8_t index, uint8_t state) {
     shuttle_pulses += shuttle_LUT[state & 0xF];
 
     if (shuttle_pulses >= resolution) {
-        shuttle_value++;
+        // shuttle_value++;
         changed = true;
         // encoder_update_kb(index, SHUTTLE_COUNTER_CLOCKWISE);
         // tap_code(KC_A);
@@ -270,7 +268,7 @@ static bool shuttle_update(uint8_t index, uint8_t state) {
         xprintf("pos: %d\n", shuttle_pos);
     }
     if (shuttle_pulses <= -resolution) { // direction is arbitrary here, but this clockwise
-        shuttle_value--;
+        // shuttle_value--;
 
         // encoder_update_kb(index, SHUTTLE_CLOCKWISE);
         // tap_code(KC_B);
