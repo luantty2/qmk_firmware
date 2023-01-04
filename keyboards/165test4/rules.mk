@@ -6,10 +6,10 @@ DEBOUNCE_TYPE = asym_eager_defer_pk
 
 EEPROM_DRIVER = transient
 
-    MCU_LDSCRIPT = STM32F103xC_tinyuf2
-    # FIRMWARE_FORMAT = uf2
-    # UF2_FAMILY = STM32F1
-    BOARD=at32f403
+    # MCU_LDSCRIPT = STM32F103xC
+    # # FIRMWARE_FORMAT = uf2
+    # # UF2_FAMILY = STM32F1
+    # BOARD=at32f403
 
 
 # MCU_FAMILY = STM32
@@ -51,7 +51,7 @@ EEPROM_DRIVER = transient
   # Linker script to use
   # - it should exist either in <chibios>/os/common/ports/ARMCMx/compilers/GCC/ld/
   #   or <keyboard_dir>/ld/
-  MCU_LDSCRIPT = STM32F103xC_tinyuf2
+  MCU_LDSCRIPT = STM32F103xC
 
   # Startup code to use
   #  - it should exist in <chibios>/os/common/startup/ARMCMx/compilers/GCC/mk/
@@ -62,3 +62,5 @@ EEPROM_DRIVER = transient
   BOARD ?= at32f403
 
   USE_FPU ?= no
+
+  STM32_BOOTLOADER_ADDRESS ?= 0x1FFFB000

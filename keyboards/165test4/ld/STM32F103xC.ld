@@ -22,7 +22,7 @@ f103_ram_size = 96k;
 
 MEMORY
 {
-    flash0  : org = 0x08000000 + 64k, len = f103_flash_size - 64k
+    flash0  : org = 0x08000000, len = f103_flash_size
     flash1  : org = 0x00000000, len = 0
     flash2  : org = 0x00000000, len = 0
     flash3  : org = 0x00000000, len = 0
@@ -86,6 +86,3 @@ REGION_ALIAS("HEAP_RAM", ram0);
 
 /* Generic rules inclusion.*/
 INCLUDE rules.ld
-
-/* TinyUF2 bootloader reset support */
-_board_dfu_dbl_tap = ORIGIN(ram0) + 64k - 4; /* this is based off the linker file for tinyuf2 */
