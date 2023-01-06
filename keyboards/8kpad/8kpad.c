@@ -37,21 +37,21 @@ void keyboard_post_init_kb(void) {
     debug_keyboard = false;
     debug_mouse    = false;
 
+    // USB MUX
+    setPinOutput(USB_MUX_SEL_PIN);
+    writePinLow(USB_MUX_SEL_PIN);
+
     keyboard_post_init_user();
 }
 
 void matrix_init_custom(void) {
     // SPI Matrix cs
     setPinOutput(SPI_MATRIX_CHIP_SELECT_PIN);
-    writePinLow(SPI_MATRIX_CHIP_SELECT_PIN);
+    // writePinLow(SPI_MATRIX_CHIP_SELECT_PIN);
 
     // spi matrix latch
     setPinOutput(SHIFTREG_MATRIX_LATCH);
     writePinHigh(SHIFTREG_MATRIX_LATCH);
-
-    // USB MUX
-    setPinOutput(USB_MUX_SEL_PIN);
-    writePinLow(USB_MUX_SEL_PIN);
 
     // spi matrix clock
     // writePinLow(SHIFTREG_MATRIX_CLK);

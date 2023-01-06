@@ -31,7 +31,8 @@
 // #define BOARD_OTG_NOVBUSSENS
 #define BOARD_OTG2_USES_ULPI
 #undef STM32_HSECLK
-#define STM32_HSECLK 8000000
+#define STM32_HSECLK 12000000
+#define BOARD_OTG_NOVBUSSENS
 
 /*
  * IO pins assignments.
