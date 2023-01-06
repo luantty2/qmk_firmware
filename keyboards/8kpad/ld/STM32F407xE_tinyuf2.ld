@@ -20,7 +20,7 @@
 
 MEMORY
 {
-    flash0 (rx) : org = 0x08000000 + 64k, len = 512k - 64k /* tinyuf2 bootloader requires app to be located at 64k offset for this MCU */
+    flash0 (rx) : org = 0x08000000 + 64k, len = 1024k - 64k /* tinyuf2 bootloader requires app to be located at 64k offset for this MCU */
     flash1 (rx) : org = 0x00000000, len = 0
     flash2 (rx) : org = 0x00000000, len = 0
     flash3 (rx) : org = 0x00000000, len = 0
