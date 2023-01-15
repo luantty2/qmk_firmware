@@ -1,5 +1,6 @@
-// Copyright 2022 luantty2 (@luantty2)
+// Copyright 2023 weimao (@luantty2)
 // SPDX-License-Identifier: GPL-2.0-or-later
+
 #pragma once
 
 #define HAL_USE_SPI TRUE

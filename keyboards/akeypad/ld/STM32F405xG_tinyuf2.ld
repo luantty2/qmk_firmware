@@ -15,7 +15,7 @@
 */
 
 /*
- * STM32F407xE memory setup.
+ * STM32F405xG memory setup.
  */
 
 MEMORY

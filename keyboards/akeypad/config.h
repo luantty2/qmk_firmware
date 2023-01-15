@@ -1,4 +1,4 @@
-// Copyright 2023 weimao (@weimao)
+// Copyright 2023 weimao (@luantty2)
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
@@ -22,8 +22,7 @@
 
 #define MATRIX_SHIFT_REGISTER_COUNT 2
 #define SPI_MATRIX_CHIP_SELECT_PIN B6
-#define SPI_MATRIX_DIVISOR 32
+#define SPI_MATRIX_DIVISOR 8
 #define SHIFTREG_MATRIX_LATCH B7
-// #define SHIFTREG_MATRIX_CLK A5
 
 #define USB_MUX_SEL_PIN B14
