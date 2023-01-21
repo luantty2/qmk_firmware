@@ -2,7 +2,7 @@
     "manufacturer": "luantty2",
     "keyboard_name": "8ktest",
     "maintainer": "luantty2",
-    "bootloader": "tinyuf2",
+    "bootloader": "stm32-dfu",
     "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,

@@ -6,3 +6,5 @@ QUANTUM_LIB_SRC += \
 SRC += debug_list.c
 
 DEFAULT_FOLDER = helixlab/aaru65/soldered
+
+DEBOUNCE_TYPE = sym_eager_pk

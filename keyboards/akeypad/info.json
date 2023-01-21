@@ -3,6 +3,7 @@
     "keyboard_name": "akeypad",
     "maintainer": "weimao",
     "bootloader": "tinyuf2",
+    "debounce":5,
     "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,

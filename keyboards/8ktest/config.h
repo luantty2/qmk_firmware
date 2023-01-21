@@ -23,3 +23,5 @@
  #define MIDI_ADVANCED
 #endif
 
+#define USB_DRIVER USBD2
+

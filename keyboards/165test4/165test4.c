@@ -190,22 +190,22 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
 //     }
 // }
 
-void pollingtest(void) {
-    register_code(KC_UP);
-    wait_us(50);
-    unregister_code(KC_UP);
-}
+// void pollingtest(void) {
+//     register_code(KC_UP);
+//     wait_us(50);
+//     unregister_code(KC_UP);
+// }
 
-static uint32_t key_timer;
+// static uint32_t key_timer;
 
-void pollingtest_run(void) {
-    uint32_t timer_now = timer_read();
-    if (TIMER_DIFF_32(timer_now, key_timer) >= 1000) {
-        pollingtest();
-        key_timer = timer_now;
-    }
-}
+// void pollingtest_run(void) {
+//     uint32_t timer_now = timer_read();
+//     if (TIMER_DIFF_32(timer_now, key_timer) >= 1000) {
+//         pollingtest();
+//         key_timer = timer_now;
+//     }
+// }
 
-void housekeeping_task_kb(void) {
-    pollingtest_run();
-}
+// void housekeeping_task_kb(void) {
+//     pollingtest_run();
+// }

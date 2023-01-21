@@ -52,6 +52,8 @@ void matrix_init_custom(void) {
     spi_init();
 }
 
+// void debounce_init(uint8_t num_rows) {}
+
 void matrix_read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row) {
     matrix_row_t current_row_value = 0;
     matrix_row_t row_shifter = MATRIX_ROW_SHIFTER;
@@ -84,6 +86,141 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
 
     return matrix_has_changed;
 }
+
+// static bool         debouncing = false;
+// static fast_timer_t debouncing_time;
+
+
+// /*0.32ms*/
+// // bool debounce(matrix_row_t raw[], matrix_row_t cooked[], uint8_t num_rows, bool changed) {
+// //     bool cooked_changed = false;
+
+// //     if (changed) {
+// //         debouncing = true;
+// //         debouncing_time = timer_read_fast();
+// //     }
+
+// //     // if (debouncing && (timer_read_fast()-debouncing_time >= 100) {
+
+// //     wait_us(100); //0.32ms
+
+// //     // if (debouncing && timer_elapsed_fast(debouncing_time) >= 1) {
+// //         uint8_t temp_hc165_data[MATRIX_SHIFT_REGISTER_COUNT] = {0, 0};
+
+// //         matrix_row_t temp_matrix[MATRIX_ROWS];
+
+// //         toggle_pin_low(SHIFTREG_MATRIX_LATCH);
+// //         spi_start(SPI_MATRIX_CHIP_SELECT_PIN, false, 0, SPI_MATRIX_DIVISOR);
+// //         spi_receive((uint8_t*)temp_hc165_data, MATRIX_SHIFT_REGISTER_COUNT);
+// //         spi_stop();
+// //         for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
+// //             // matrix_read_cols_on_row(temp_matrix, current_row);
+// //             matrix_row_t current_row_value = 0;
+// //             matrix_row_t row_shifter       = MATRIX_ROW_SHIFTER;
+
+// //             for (uint8_t col_index = 0; col_index < 8 * sizeof(matrix_row_t); col_index++, row_shifter <<= 1) {
+// //                 if (hc165_keys[current_row][col_index].driver != NO_DRIVER) {
+// //                     // get a bit from a byte: byte & (1<<pos)
+// //                     current_row_value |= (temp_hc165_data[hc165_keys[current_row][col_index].driver] & (0x01 << (hc165_keys[current_row][col_index].channel))) ? 0 : row_shifter;
+// //                 }
+// //             }
+// //             temp_matrix[current_row] = current_row_value;
+// //         }
+
+// //         if (debouncing && memcmp(cooked, temp_matrix, sizeof(matrix_row_t) * num_rows) != 0) {
+// //             memcpy(cooked, temp_matrix, sizeof(matrix_row_t) * num_rows);
+// //             cooked_changed = true;
+// //             debouncing     = false;
+// //         }
+// //     // }
+
+// //     // }
+
+// //     // if (debouncing && (timer_read_fast()-debouncing_time >= 1)) {
+// //     //     if (memcmp(cooked, raw, sizeof(matrix_row_t) * num_rows) != 0) {
+// //     //         memcpy(cooked, raw, sizeof(matrix_row_t) * num_rows);
+// //     //         cooked_changed = true;
+// //     //     }
+// //     //     debouncing = false;
+// //     // }
+// //     return cooked_changed;
+
+// //     // if (debouncing && timer_elapsed_fast(debouncing_time) >= DEBOUNCE) {
+// //     //     if (memcmp(cooked, raw, sizeof(matrix_row_t) * num_rows) != 0) {
+// //     //         memcpy(cooked, raw, sizeof(matrix_row_t) * num_rows);
+// //     //         cooked_changed = true;
+// //     //     }
+// //     //     debouncing = false;
+// //     // }
+
+// //     // return cooked_changed;
+// // }
+
+// bool debounce(matrix_row_t raw[], matrix_row_t cooked[], uint8_t num_rows, bool changed) {
+//     bool cooked_changed = false;
+
+//     if (changed) {
+//         debouncing = true;
+//         debouncing_time = timer_read_fast();
+//     }
+
+//     // if (debouncing && (timer_read_fast()-debouncing_time >= 100) {
+
+//     // wait_us(100); //0.32ms
+
+//     // // if (debouncing && timer_elapsed_fast(debouncing_time) >= 1) {
+//     //     uint8_t temp_hc165_data[MATRIX_SHIFT_REGISTER_COUNT] = {0, 0};
+
+//     //     matrix_row_t temp_matrix[MATRIX_ROWS];
+
+//     //     toggle_pin_low(SHIFTREG_MATRIX_LATCH);
+//     //     spi_start(SPI_MATRIX_CHIP_SELECT_PIN, false, 0, SPI_MATRIX_DIVISOR);
+//     //     spi_receive((uint8_t*)temp_hc165_data, MATRIX_SHIFT_REGISTER_COUNT);
+//     //     spi_stop();
+//     //     for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
+//     //         // matrix_read_cols_on_row(temp_matrix, current_row);
+//     //         matrix_row_t current_row_value = 0;
+//     //         matrix_row_t row_shifter       = MATRIX_ROW_SHIFTER;
+
+//     //         for (uint8_t col_index = 0; col_index < 8 * sizeof(matrix_row_t); col_index++, row_shifter <<= 1) {
+//     //             if (hc165_keys[current_row][col_index].driver != NO_DRIVER) {
+//     //                 // get a bit from a byte: byte & (1<<pos)
+//     //                 current_row_value |= (temp_hc165_data[hc165_keys[current_row][col_index].driver] & (0x01 << (hc165_keys[current_row][col_index].channel))) ? 0 : row_shifter;
+//     //             }
+//     //         }
+//     //         temp_matrix[current_row] = current_row_value;
+//     //     }
+
+//     //     if (debouncing && memcmp(cooked, temp_matrix, sizeof(matrix_row_t) * num_rows) != 0) {
+//     //         memcpy(cooked, temp_matrix, sizeof(matrix_row_t) * num_rows);
+//     //         cooked_changed = true;
+//     //         debouncing     = false;
+//     //     }
+//     // // }
+
+//     // // }
+
+//     // // if (debouncing && (timer_read_fast()-debouncing_time >= 1)) {
+//     // //     if (memcmp(cooked, raw, sizeof(matrix_row_t) * num_rows) != 0) {
+//     // //         memcpy(cooked, raw, sizeof(matrix_row_t) * num_rows);
+//     // //         cooked_changed = true;
+//     // //     }
+//     // //     debouncing = false;
+//     // // }
+//     // return cooked_changed;
+
+//     if (debouncing && timer_elapsed_fast(debouncing_time) >= DEBOUNCE) {
+//         if (memcmp(cooked, raw, sizeof(matrix_row_t) * num_rows) != 0) {
+//             memcpy(cooked, raw, sizeof(matrix_row_t) * num_rows);
+//             cooked_changed = true;
+//         }
+//         debouncing = false;
+//     }
+
+//     return cooked_changed;
+// }
+
+// void debounce_free(void) {}
 
 /*
 Test polling rate
