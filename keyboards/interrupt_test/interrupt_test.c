@@ -25,7 +25,6 @@ void keyboard_post_init_kb(void) {
     palSetLineMode(INT_GPIO, PAL_MODE_INPUT);
     palEnableLineEvent(INT_GPIO, PAL_EVENT_MODE_FALLING_EDGE); \
     palSetLineCallback(INT_GPIO, palCallback, NULL); 
-
     palSetLineMode(A4, PAL_MODE_OUTPUT_PUSHPULL);
 
 }

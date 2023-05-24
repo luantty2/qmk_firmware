@@ -32,7 +32,7 @@ void toggle_pin_low(pin_t pin) {
 }
 
 void keyboard_post_init_kb(void) {
-    debug_enable   = false;
+    debug_enable   = true;
     debug_matrix   = false;
     debug_keyboard = false;
     debug_mouse    = false;
