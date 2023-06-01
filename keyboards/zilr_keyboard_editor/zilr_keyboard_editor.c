@@ -16,10 +16,21 @@
 
 static uint32_t shuttle_read_timer;
 
+#define SOFTWARE_TIMER
+
+#ifdef HARDWARE_TIMER
 bool last_pinState_2HZ  = true;
 bool last_pinState_5HZ  = true;
 bool last_pinState_10HZ = true;
 bool last_pinState_15HZ = true;
+#endif
+
+#ifdef SOFTWARE_TIMER
+static uint32_t software_timer_2hz;
+static uint32_t software_timer_5hz;
+static uint32_t software_timer_10hz;
+static uint32_t software_timer_15hz;
+#endif
 
 void keyboard_post_init_kb(void) {
     debug_enable   = true;
@@ -30,6 +41,7 @@ void keyboard_post_init_kb(void) {
     rgb_indicator_init();
     shuttle_init();
 
+#ifdef HARDWARE_TIMER
     setPinInput(INT_2HZ_PIN);
     // palEnableLineEvent(INT_2HZ_PIN, PAL_EVENT_MODE_FALLING_EDGE);
     // palSetLineCallback(INT_2HZ_PIN, palCallback_2HZ, NULL);
@@ -45,6 +57,8 @@ void keyboard_post_init_kb(void) {
     setPinInput(INT_15HZ_PIN);
     // palEnableLineEvent(INT_15HZ_PIN, PAL_EVENT_MODE_FALLING_EDGE);
     // palSetLineCallback(INT_15HZ_PIN, palCallback_15HZ, NULL);
+#endif
+    keyboard_post_init_user();
 }
 
 bool led_update_kb(led_t led_state) {
@@ -78,67 +92,135 @@ void shuttle_run(void) {
 }
 
 void task_2HZ(void) {
+#ifdef HARDWARE_TIMER
     bool current_pinState_2HZ = readPin(INT_2HZ_PIN);
     if (current_pinState_2HZ == 0 && last_pinState_2HZ == 1) {
         if (shuttle_get_zone() == SHUTTLE_ZONE_2X) {
-            // dprintf("2hz_2x triggered\n");
+            // dprintf("HW 2hz_2x triggered\n");
             tap_code(KC_RIGHT);
         } else if (shuttle_get_zone() == SHUTTLE_ZONE_N2X) {
-            // dprintf("2hz_n2x triggered\n");
+            // dprintf("HW 2hz_n2x triggered\n");
             tap_code(KC_LEFT);
         }
     }
     last_pinState_2HZ = current_pinState_2HZ;
+#elif defined SOFTWARE_TIMER
+    uint32_t timer_now = timer_read();
+    if (TIMER_DIFF_32(timer_now, software_timer_2hz) >= 500) {
+        if (shuttle_get_zone() == SHUTTLE_ZONE_2X) {
+            // dprintf("SW 2hz_2x triggered\n");
+            tap_code(KC_RIGHT);
+        } else if (shuttle_get_zone() == SHUTTLE_ZONE_N2X) {
+            // dprintf("SW 2hz_n2x triggered\n");
+            tap_code(KC_LEFT);
+        }
+        software_timer_2hz = timer_now;
+    }
+#endif
 }
 
 void task_5HZ(void) {
+#ifdef HARDWARE_TIMER
     bool current_pinState_5HZ = readPin(INT_5HZ_PIN);
     if (current_pinState_5HZ == 0 && last_pinState_5HZ == 1) {
         if (shuttle_get_zone() == SHUTTLE_ZONE_5X) {
-            // dprintf("5hz_5x triggered\n");
+            // dprintf("HW 5hz_5x triggered\n");
             tap_code(KC_RIGHT);
         } else if (shuttle_get_zone() == SHUTTLE_ZONE_N5X) {
-            // dprintf("5hz_n5x triggered\n");
+            // dprintf("HW 5hz_n5x triggered\n");
             tap_code(KC_LEFT);
         }
     }
     last_pinState_5HZ = current_pinState_5HZ;
+#elif defined SOFTWARE_TIMER
+    uint32_t timer_now = timer_read();
+    if (TIMER_DIFF_32(timer_now, software_timer_5hz) >= 200) {
+        if (shuttle_get_zone() == SHUTTLE_ZONE_5X) {
+            // dprintf("SW 5hz_5x triggered\n");
+            tap_code(KC_RIGHT);
+        } else if (shuttle_get_zone() == SHUTTLE_ZONE_N5X) {
+            // dprintf("SW 5hz_n5x triggered\n");
+            tap_code(KC_LEFT);
+        }
+        software_timer_5hz = timer_now;
+    }
+#endif
 }
 
 void task_10HZ(void) {
+#ifdef HARDWARE_TIMER
     bool current_pinState_10HZ = readPin(INT_10HZ_PIN);
     if (current_pinState_10HZ == 0 && last_pinState_10HZ == 1) {
         if (shuttle_get_zone() == SHUTTLE_ZONE_10X) {
-            // dprintf("10hz_10x triggered\n");
+            // dprintf("HW 10hz_10x triggered\n");
             tap_code(KC_RIGHT);
         } else if (shuttle_get_zone() == SHUTTLE_ZONE_N10X) {
-            // dprintf("10hz_n10x triggered\n");
+            // dprintf("HW 10hz_n10x triggered\n");
             tap_code(KC_LEFT);
         }
     }
     last_pinState_10HZ = current_pinState_10HZ;
+#elif defined SOFTWARE_TIMER
+    uint32_t timer_now = timer_read();
+    if (TIMER_DIFF_32(timer_now, software_timer_10hz) >= 100) {
+        if (shuttle_get_zone() == SHUTTLE_ZONE_10X) {
+            // dprintf("SW 10hz_10x triggered\n");
+            tap_code(KC_RIGHT);
+        } else if (shuttle_get_zone() == SHUTTLE_ZONE_N10X) {
+            // dprintf("SW 10hz_n10x triggered\n");
+            tap_code(KC_LEFT);
+        }
+        software_timer_10hz = timer_now;
+    }
+#endif
 }
 
 void task_15HZ(void) {
+#ifdef HARDWARE_TIMER
     bool current_pinState_15HZ = readPin(INT_15HZ_PIN);
     if (current_pinState_15HZ == 0 && last_pinState_15HZ == 1) {
         if (shuttle_get_zone() == SHUTTLE_ZONE_15X) {
-            // dprintf("15hz_15x triggered\n");
+            // dprintf("HW 15hz_15x triggered\n");
             tap_code(KC_RIGHT);
         } else if (shuttle_get_zone() == SHUTTLE_ZONE_N15X) {
-            // dprintf("15hz_n15x triggered\n");
+            // dprintf("HW 15hz_n15x triggered\n");
             tap_code(KC_LEFT);
         } else if (shuttle_get_zone() == SHUTTLE_ZONE_SX) {
+            // dprintf("HW 15hz_15x xs triggered\n");
             register_code16(S(KC_RIGHT));
             wait_ms(30);
             unregister_code16(S(KC_RIGHT));
         } else if (shuttle_get_zone() == SHUTTLE_ZONE_NSX) {
+            // dprintf("HW 15hz_15x xs triggered\n");
             register_code16(S(KC_LEFT));
             wait_ms(30);
             unregister_code16(S(KC_LEFT));
         }
     }
     last_pinState_15HZ = current_pinState_15HZ;
+#elif defined SOFTWARE_TIMER
+    uint32_t timer_now = timer_read();
+    if (TIMER_DIFF_32(timer_now, software_timer_15hz) >= 67) {
+        if (shuttle_get_zone() == SHUTTLE_ZONE_15X) {
+            // dprintf("sW 15hz_15x triggered\n");
+            tap_code(KC_RIGHT);
+        } else if (shuttle_get_zone() == SHUTTLE_ZONE_N15X) {
+            // dprintf("sW 15hz_n15x triggered\n");
+            tap_code(KC_LEFT);
+        } else if (shuttle_get_zone() == SHUTTLE_ZONE_SX) {
+            // dprintf("sW 15hz_15x xs triggered\n");
+            register_code16(S(KC_RIGHT));
+            wait_ms(30);
+            unregister_code16(S(KC_RIGHT));
+        } else if (shuttle_get_zone() == SHUTTLE_ZONE_NSX) {
+            // dprintf("SW 15hz_15x xs triggered\n");
+            register_code16(S(KC_LEFT));
+            wait_ms(30);
+            unregister_code16(S(KC_LEFT));
+        }
+        software_timer_15hz = timer_now;
+    }
+#endif
 }
 
 void housekeeping_task_kb(void) {

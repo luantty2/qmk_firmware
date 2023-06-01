@@ -12,6 +12,10 @@
         "mousekey": true,
         "nkro": true
     },
+    "bootmagic": {
+        "enabled": true,
+        "matrix": [0, 3]
+    },
     "matrix_pins": {
         "cols": ["C9","B12","B2","B3","D2","C12","A1","A0","C3","B9","B8","C14","C15","B7","B6","B5","B4","C11","C10","A15","C8","C7","C6","B15","A14","A13","A10"],
         "rows": ["B11","B10","C2","C5","B0","B1"]
