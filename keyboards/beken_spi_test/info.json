@@ -3,18 +3,19 @@
     "keyboard_name": "beken_spi_test",
     "maintainer": "luantty2",
     "bootloader": "stm32-dfu",
-    "diode_direction": "COL2ROW",
+    "development_board": "blackpill_f411",
     "features": {
         "bootmagic": true,
         "command": false,
-        "console": false,
+        "console": true,
         "extrakey": true,
         "mousekey": true,
         "nkro": true
     },
     "matrix_pins": {
-        "cols": ["C2"],
-        "rows": ["D1"]
+        "direct": [
+            ["B9", "B8", "B7", "B6", "B5" ]
+        ]
     },
     "processor": "STM32F411",
     "url": "",
@@ -24,9 +25,13 @@
         "vid": "0xFEED"
     },
     "layouts": {
-        "LAYOUT_ortho_1x1": {
+        "LAYOUT": {
             "layout": [
-                { "matrix": [0, 0], "x": 0, "y": 0 }
+                { "matrix": [0, 0], "x": 0, "y": 0 },
+                { "matrix": [0, 1], "x": 1, "y": 0 },
+                { "matrix": [0, 2], "x": 2, "y": 0 },
+                { "matrix": [0, 3], "x": 3, "y": 0 },
+                { "matrix": [0, 4], "x": 4, "y": 0 }
             ]
         }
     }
