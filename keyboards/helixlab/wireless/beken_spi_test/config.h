@@ -11,6 +11,10 @@
 #define SPI_MISO_PIN A6
 #define SPI_MISO_PAL_MODE 5
 
+#define BK3632_SPI_SLAVE_SELECT_PIN A4
+#define BK3632_MOT_PIN A3
+#define BK3632_SLEEP_PIN A2
+
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.
