@@ -1,6 +1,6 @@
 {
     "manufacturer": "weimao",
-    "keyboard_name": "beken_spi_test",
+    "keyboard_name": "nrf_uart_test",
     "maintainer": "luantty2",
     "bootloader": "stm32-dfu",
     "development_board": "blackpill_f411",
@@ -14,25 +14,28 @@
     },
     "matrix_pins": {
         "direct": [
-            [null, "B7", "B6" ],
-            ["B9", "B8", "B5" ]
+            ["B4", "B7", "B6" ],
+            ["B9", "B8", "B5" ],
+            ["A0"]
         ]
     },
     "processor": "STM32F411",
     "url": "",
     "usb": {
         "device_version": "1.0.0",
-        "pid": "0x3301",
+        "pid": "0x3302",
         "vid": "0x2B63"
     },
     "layouts": {
         "LAYOUT": {
             "layout": [
+                { "matrix": [0, 0], "x": 0, "y": 0 },
                 { "matrix": [0, 1], "x": 1, "y": 0 },
                 { "matrix": [0, 2], "x": 2, "y": 0 },
                 { "matrix": [1, 0], "x": 0, "y": 1 },
                 { "matrix": [1, 1], "x": 1, "y": 1 },
-                { "matrix": [1, 2], "x": 2, "y": 1 }
+                { "matrix": [1, 2], "x": 2, "y": 1 },
+                { "matrix": [2, 0], "x": 2, "y": 0 },
             ]
         }
     }
