@@ -31,15 +31,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 /*simulate battery power consumption*/
-static uint32_t bat_update_timer;
-static uint8_t  bat_level = 100U;
+// static uint32_t bat_update_timer;
+// static uint8_t  bat_level = 100U;
 
-void housekeeping_task_user(void) {
-    uint32_t timer_now = timer_read();
-    if ((TIMER_DIFF_32(timer_now, bat_update_timer) >= 1000)) {
-        bat_level--;
-        bat_level        = MAX(MIN(bat_level, 100U), 0U);
-        blueism_battery_update(bat_level);
-        bat_update_timer = timer_now;
-    }
-}
+// void housekeeping_task_user(void) {
+//     uint32_t timer_now = timer_read();
+//     if ((TIMER_DIFF_32(timer_now, bat_update_timer) >= 1000)) {
+//         bat_level--;
+//         bat_level        = MAX(MIN(bat_level, 100U), 0U);
+//         blueism_battery_update(bat_level);
+//         bat_update_timer = timer_now;
+//     }
+// }

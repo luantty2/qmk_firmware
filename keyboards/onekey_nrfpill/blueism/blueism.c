@@ -32,6 +32,12 @@ static uint32_t send_timer;
 void blueism_init(void) {
     ringBufferInit(&send_buffer, send_buff_data, sizeof(send_buff_data));
     uart_init(BLUEISM_UART_BAUDRATE);
+
+    setPinOutput(B12); //wakeup pin
+    writePinHigh(B12);
+    setPinInputHigh(B13); //sleep status read pin
+
+    setPinOutput(C13); //wakeup pin
 }
 
 blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t payload_len) {
@@ -142,6 +148,13 @@ void blueism_unpair() {
 }
 
 void blueism_task(void) {
+
+    if(readPin(B13)==0){   //if is not sleeping
+         writePinHigh(C13);  //led off
+    }else{
+        writePinLow(C13) ;  //if is sleeping led on
+    }
+
     uint32_t timer_now = timer_read();
     if (!ringBufferEmpty(&send_buffer) && (TIMER_DIFF_32(timer_now, send_timer) >= BLUEISM_UART_SEND_INTERVAL_MS)) {
         if (ringBufferLen(&send_buffer) % BLUEISM_UART_PACKET_LEN != 0) {
@@ -150,7 +163,14 @@ void blueism_task(void) {
         } else {
             uint8_t data[BLUEISM_UART_PACKET_LEN];
             ringBufferGetMultiple(&send_buffer, data, sizeof(data));
-            uart_transmit(data, sizeof(data));
+            if (readPin(B13)==0) {
+                uart_transmit(data, sizeof(data));
+            } else {
+                writePinLow(B12);
+                matrix_io_delay();
+                writePinHigh(B12);
+                uart_transmit(data, sizeof(data));
+            }
         }
         send_timer = timer_now;
     }
