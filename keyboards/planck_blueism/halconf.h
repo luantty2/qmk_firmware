@@ -5,4 +5,6 @@
 #define HAL_USE_SERIAL TRUE
 #define PAL_USE_CALLBACKS TRUE
 #define SERIAL_BUFFERS_SIZE 256
+// This enables interrupt-driven mode
+#define PAL_USE_WAIT TRUE
 #include_next <halconf.h>

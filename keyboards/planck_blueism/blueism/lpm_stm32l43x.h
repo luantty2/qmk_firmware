@@ -8,3 +8,5 @@ typedef enum {
 } pm_t;
 
 void enter_power_mode_stop1(void);
+void lpm_init(void);
+void lpm_timer_reset(void);

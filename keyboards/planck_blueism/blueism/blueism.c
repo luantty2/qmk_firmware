@@ -6,6 +6,7 @@
 #include "blueism.h"
 #include "ringbuffer.h"
 #include "stdio.h"
+#include "lpm_stm32l43x.h"
 
 #define BLUEISM_UART_BAUDRATE 115200
 #define BLUEISM_UART_PACKET_LEN 16
@@ -181,6 +182,7 @@ bool bat_detect(void) {
 void blueism_task(void) {
     uint32_t timer_now = timer_read();
     if (!ringBufferEmpty(&send_buffer) && (TIMER_DIFF_32(timer_now, send_timer) >= BLUEISM_UART_SEND_INTERVAL_MS)) {
+        lpm_timer_reset();
         if (ringBufferLen(&send_buffer) % BLUEISM_UART_PACKET_LEN != 0) {
             dprintf("Corrupted data in sending buffer\n");
             ringBufferClear(&send_buffer);

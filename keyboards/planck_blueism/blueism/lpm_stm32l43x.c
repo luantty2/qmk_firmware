@@ -4,10 +4,18 @@
 #include "lpm_stm32l43x.h"
 #include "usb_main.h"
 #include "uart.h"
+#include "debounce.h"
 
+pin_t row_pins[MATRIX_ROWS] = MATRIX_ROW_PINS;
 pin_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
 
-static pm_t power_mode = PM_RUN;
+extern matrix_row_t          matrix[MATRIX_ROWS];
+static matrix_row_t empty_matrix[MATRIX_ROWS] = {0};
+
+static bool     lpm_time_up = false;
+static uint32_t lpm_timer_buffer;
+
+static pm_t        power_mode = PM_RUN;
 static inline void stm32_clock_fast_init(void);
 
 bool lpm_set(pm_t mode) {
@@ -30,10 +38,16 @@ static inline void enter_low_power_mode_prepare(void) {
     usbDisconnectBus(&USBD1);
     PWR->CR2 &= ~PWR_CR2_USV;
 
+    for (int i = 0; i < ARRAY_SIZE(col_pins); ++i) {
+        setPinOutput(col_pins[i]);
+        writePinLow(col_pins[i]);
+    }
+
     /* Enable key matrix wake up */
-    for (uint8_t x = 0; x < MATRIX_COLS; x++) {
-        if (col_pins[x] != NO_PIN) {
-            palEnableLineEvent(col_pins[x], PAL_EVENT_MODE_BOTH_EDGES);
+    for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
+        if (row_pins[x] != NO_PIN) {
+            setPinInputHigh(row_pins[x]);
+            palEnableLineEvent(row_pins[x], PAL_EVENT_MODE_BOTH_EDGES);
         }
     }
 }
@@ -52,9 +66,9 @@ static inline void lpm_wakeup(void) {
     timer_init();
     chSysUnlock();
     /* Disable all wake up pins */
-    for (uint8_t x = 0; x < MATRIX_COLS; x++) {
-        if (col_pins[x] != NO_PIN) {
-            palDisableLineEvent(col_pins[x]);
+    for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
+        if (row_pins[x] != NO_PIN) {
+            palDisableLineEvent(row_pins[x]);
         }
     }
 
@@ -65,7 +79,6 @@ static inline void lpm_wakeup(void) {
     sdInit();
     SerialConfig config = {115200, 0, 0, 0};
     sdStart(&SERIAL_DRIVER, &config);
-    power_mode = PM_RUN;
 }
 
 void enter_power_mode(pm_t mode) {
@@ -77,6 +90,9 @@ void enter_power_mode(pm_t mode) {
     __WFI();
 
     lpm_wakeup();
+    debounce_free();
+    matrix_init();
+    power_mode = PM_RUN;
 }
 
 void enter_power_mode_stop1(void) {
@@ -88,6 +104,10 @@ void enter_power_mode_stop1(void) {
     __WFI();
 
     lpm_wakeup();
+    lpm_timer_reset();
+    debounce_free();
+    matrix_init();
+    power_mode = PM_RUN;
 }
 
 void stm32_clock_fast_init(void) {
@@ -144,4 +164,40 @@ void stm32_clock_fast_init(void) {
         }
     }
 #endif /* STM32_NO_INIT */
+}
+
+void lpm_init(void) {
+    lpm_timer_reset();
+}
+
+void lpm_timer_reset(void) {
+    lpm_time_up      = false;
+    lpm_timer_buffer = sync_timer_read32();
+}
+
+void lpm_timer_stop(void) {
+    lpm_time_up      = false;
+    lpm_timer_buffer = 0;
+}
+
+static inline bool lpm_any_matrix_action(void) { return memcmp(matrix, empty_matrix, sizeof(empty_matrix)); }
+
+void lpm_task(void) {
+    if (!lpm_time_up && sync_timer_elapsed32(lpm_timer_buffer) > 1000) {
+        lpm_time_up      = true;
+        lpm_timer_buffer = 0;
+    }
+
+    if (lpm_time_up&& !lpm_any_matrix_action()) {
+        enter_power_mode_stop1();
+    }
+}
+
+void housekeeping_task_kb(void) {
+    lpm_task();
+    // auto_low_power();
+    // if (!lpm_time_up&& last_input_activity_elapsed() > 1000) {
+    //     lpm_time_up      = true;
+    //     enter_power_mode_stop1();
+    // }
 }

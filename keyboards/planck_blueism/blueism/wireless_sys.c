@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "bluetooth.h"
 #include "blueism.h"
+#include "lpm_stm32l43x.h"
 
 void bluetooth_init() {
     blueism_init();
+    lpm_init();
 }
 void bluetooth_task() {
     blueism_task();
