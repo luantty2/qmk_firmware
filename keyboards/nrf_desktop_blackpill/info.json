@@ -1,0 +1,34 @@
+{
+    "manufacturer": "luantty2",
+    "keyboard_name": "nrf_desktop_blackpill",
+    "maintainer": "luantty2",
+    "bootloader": "stm32-dfu",
+    "development_board": "blackpill_f411",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": true,
+        "extrakey": false,
+        "mousekey": false,
+        "nkro": false
+    },
+    "matrix_pins": {
+        "direct": [
+            ["A0"],
+            ["B9"]
+        ]
+    },
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x3302",
+        "vid": "0x2B85"
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                { "matrix": [0, 0], "x": 0, "y": 0 },
+                { "matrix": [1, 0], "x": 0, "y": 1 }
+            ]
+        }
+    }
+}
