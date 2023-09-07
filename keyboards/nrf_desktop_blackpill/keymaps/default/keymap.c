@@ -10,7 +10,14 @@ enum keycodes{
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
-        KC_A, UNPAIR
+        KC_1, KC_UP, MO(1),
+        KC_LEFT, KC_DOWN, KC_RGHT,
+        KC_LSFT
+    ),
+    [1] = LAYOUT(
+        UNPAIR, KC_VOLU, KC_TRNS,
+        KC_1, KC_VOLD, KC_2,
+        KC_TRNS
     )
 };
 

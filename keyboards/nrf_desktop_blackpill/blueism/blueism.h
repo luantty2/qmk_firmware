@@ -12,11 +12,14 @@ typedef int8_t blueism_send_status_t;
 #define REPORT_FIELD 0x20
 #define SYS_FIELD 0x30
 
-#define CMD_BT_UNPAIR (BT_FIELD | 0x01)
+// #define CMD_BT_UNPAIR (BT_FIELD | 0x01)
+#define CMD_BT_UNPAIR 0x26
 #define CMD_BT_BAT_UPDATE (BT_FIELD | 0x06)
-#define CMD_REPORT_KB (REPORT_FIELD | 0x01)
+// #define CMD_REPORT_KB (REPORT_FIELD | 0x01)
+#define CMD_REPORT_KB 0x31
 #define CMD_REPORT_MOUSE (REPORT_FIELD | 0x02)
-#define CMD_REPORT_CONSUMER (REPORT_FIELD | 0x03)
+// #define CMD_REPORT_CONSUMER (REPORT_FIELD | 0x03)
+#define CMD_REPORT_CONSUMER 0x32
 // #define CMD_REPORT_NKRO (REPORT_FIELD | 0x04)
 
 typedef struct {

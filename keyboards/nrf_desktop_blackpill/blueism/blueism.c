@@ -10,7 +10,7 @@
 #define BLUEISM_UART_PACKET_LEN 16
 #define BLUEISM_UART_PACKET_COMMON_LEN 5
 #ifndef BLUEISM_UART_SEND_INTERVAL_MS
-#    define BLUEISM_UART_SEND_INTERVAL_MS 3
+#    define BLUEISM_UART_SEND_INTERVAL_MS 5
 #endif
 #ifndef SEND_BUFFER_SIZE
 #    define SEND_BUFFER_SIZE 256
@@ -32,6 +32,12 @@ static uint32_t send_timer;
 void blueism_init(void) {
     ringBufferInit(&send_buffer, send_buff_data, sizeof(send_buff_data));
     uart_init(BLUEISM_UART_BAUDRATE);
+    setPinOutput(A13);
+    writePinLow(A13);
+    matrix_io_delay();
+    setPinInputHigh(A13);
+
+    setPinInputHigh(A14);
 }
 
 blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t payload_len) {
@@ -149,9 +155,36 @@ void blueism_task(void) {
             ringBufferClear(&send_buffer);
         } else {
             uint8_t data[BLUEISM_UART_PACKET_LEN];
-            ringBufferGetMultiple(&send_buffer, data, sizeof(data));
-            uart_transmit(data, sizeof(data));
+            // ringBufferGetMultiple(&send_buffer, data, sizeof(data));
+            if (readPin(A14)) {  //if sleeping
+                setPinOutput(A13);
+                writePinLow(A13);
+                wait_ms(50);
+                /*Do not send here, will stuck the BT module */
+                // uart_transmit(data, sizeof(data));
+                setPinInputHigh(A13);
+                // dprintf("High, sleeping\n");
+
+            } else {
+                ringBufferGetMultiple(&send_buffer, data, sizeof(data));
+                uart_transmit(data, sizeof(data));
+                // dprintf("LOW, not sleeping\n");
+            }
         }
         send_timer = timer_now;
     }
 }
+
+// static uint32_t key_timer;
+
+// void housekeeping_task_kb(void){
+//     uint32_t timer_now = timer_read();
+//     if ((TIMER_DIFF_32(timer_now, key_timer) >= 500)) {
+//         if (!readPin(A14)) {
+//             dprintf("LOW, not sleeping\n");
+//         }else{
+//             dprintf("High, sleeping\n");
+//         }
+//         key_timer = timer_now;
+//     }
+// }
