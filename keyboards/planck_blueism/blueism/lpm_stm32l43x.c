@@ -7,7 +7,7 @@
 
 pin_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
 
-static pm_t power_mode = PM_RUN;
+static pm_t        power_mode = PM_RUN;
 static inline void stm32_clock_fast_init(void);
 
 bool lpm_set(pm_t mode) {
@@ -40,8 +40,8 @@ static inline void enter_low_power_mode_prepare(void) {
 
 static inline void lpm_wakeup(void) {
     chSysLock();
-    stm32_clock_init();
-    // stm32_clock_fast_init();
+    // stm32_clock_init();
+    stm32_clock_fast_init();
     chSysUnlock();
     chSysLock();
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
