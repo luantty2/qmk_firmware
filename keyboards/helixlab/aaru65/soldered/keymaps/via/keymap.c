@@ -171,6 +171,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
             }
             return false;
+        case CL_TOGG:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    keymap_config.swap_control_capslock = !keymap_config.swap_control_capslock;
+                    eeconfig_update_keymap(keymap_config.raw);
+                }
+            } else {
+            }
+            return false;
+        case GUI_TOG:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    keymap_config.no_gui = !keymap_config.no_gui;
+                    eeconfig_update_keymap(keymap_config.raw);
+                }
+            } else {
+            }
+            return false;
+        case AG_TOGG:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    keymap_config.swap_lalt_lgui = !keymap_config.swap_lalt_lgui;
+                    keymap_config.swap_ralt_rgui = keymap_config.swap_lalt_lgui;
+                    eeconfig_update_keymap(keymap_config.raw);
+                }
+            } else {
+            }
+            return false;
         default:
             return true; // Process all other keycodes normally
     }
