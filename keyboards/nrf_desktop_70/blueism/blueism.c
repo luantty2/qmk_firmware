@@ -52,9 +52,6 @@ void blueism_init(void) {
 #ifdef HIDS_LEDS_ENABLE
     hid_leds_init();
 #endif
-#ifdef MAX1704X_ENABLE
-    max1704x_init();
-#endif
 }
 
 blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t payload_len) {

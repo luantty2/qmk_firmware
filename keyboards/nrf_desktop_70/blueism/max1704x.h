@@ -31,3 +31,6 @@ void max1704x_init(void);
 void max1704x_reset(void);
 void max1704x_get_vcell(void);
 bool max1704x_get_soc(uint8_t *val);
+bool max1704x_soft_reset(void);
+bool max1704x_set_vreset(uint8_t vres_val);
+bool max1704x_read_vreset(uint8_t *vres_val);

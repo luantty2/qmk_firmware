@@ -8,10 +8,10 @@ typedef int8_t blueism_send_status_t;
 #define BLUEISM_SEND_STATUS_FAILED (1)
 
 #define CMD_BT_UNPAIR 0x26
-#define CMD_BT_BAT_UPDATE 0x00
 #define CMD_REPORT_KB 0x31
-#define CMD_REPORT_MOUSE 0x00
 #define CMD_REPORT_CONSUMER 0x32
+#define CMD_REPORT_MOUSE 0x34
+#define CMD_BT_BAT_UPDATE 0x35
 
 typedef struct {
     uint8_t mods;

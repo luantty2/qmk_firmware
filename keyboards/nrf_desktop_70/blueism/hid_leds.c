@@ -6,7 +6,7 @@
 #include "config_blueism.h"
 
 void palCallback_caps_detected(void *arg) {
-    if (!usb_connected_state()) {
+    if (!readPin(VBUS_DETECT_PIN)) {
         writePin(CAPS_LED_PIN, readPin(NRF_CAPS_DET) ? 1 : 0);
     }
 }

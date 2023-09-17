@@ -68,25 +68,37 @@ static inline void enter_low_power_mode_prepare(void) {
 
     // palEnableLineEvent(VBUS_DETECT_PIN, PAL_EVENT_MODE_BOTH_EDGES);
 
-#ifdef HIDS_LEDS_ENABLE
+#    ifdef HIDS_LEDS_ENABLE
     disable_leds_cb();
-#endif
+#    endif
 }
 
 static inline void lpm_wakeup(void) {
     chSysLock();
     // stm32_clock_init();
-    stm32_clock_fast_init();
     // hsi48_init();
+
+    // 为了修复via的问题，只能用这个
+    stm32_clock_fast_init();
     chSysUnlock();
     chSysLock();
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
     PWR->SCR |= PWR_SCR_CWUF;
     PWR->SCR |= PWR_SCR_CSBF;
+    // PWR->CR2 |= PWR_CR2_USV; /* PWR_CR2_USV is available on STM32L4x2xx and STM32L4x3xx devices only. */
+    // usb_wakeup(&USBD1);
+    // usb_start(&USBD1);
+    // init_usb_driver(&USBD1);
+    // restart_usb_driver(&USBD1);
     /* TIMx is disable during stop/standby/sleep mode, init after wakeup */
     stInit();
     timer_init();
     chSysUnlock();
+
+    if (readPin(VBUS_DETECT_PIN)) {
+        PWR->CR2 |= PWR_CR2_USV;
+        usb_start(&USBD1);
+    }
     /* Disable all wake up pins */
     for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
         if (row_pins[x] != NO_PIN) {
@@ -96,38 +108,39 @@ static inline void lpm_wakeup(void) {
 
     // palDisableLineEvent(VBUS_DETECT_PIN);
 
-#ifdef HIDS_LEDS_ENABLE
+#    ifdef HIDS_LEDS_ENABLE
     enable_leds_cb();
-#endif
+#    endif
 
-    if (usb_connected_state()) {
-        // chSysLock();
-        hsi48_init();
-        // chSysUnlock();
-        // hsi48_init();
-        /* Remove USB isolation.*/
-        // PWR->CR2 |= PWR_CR2_USV; /* PWR_CR2_USV is available on STM32L4x2xx and STM32L4x3xx devices only. */
-        // usb_power_connect();
-        PWR->CR2 |= PWR_CR2_USV;
-        // usbStart(&USBD1);
-        // usb_start(&USBD1);
-        // _usb_wakeup(&USBD1);
+    // if (usb_connected_state()) {
+    // if (readPin(VBUS_DETECT_PIN)) {
 
-        // clear_keyboard();
-        restart_usb_driver(&USBD1);
-        _usb_wakeup(&USBD1);
+    // chSysLock();
+    // hsi48_init();
+    // chSysUnlock();
+    // hsi48_init();
+    /* Remove USB isolation.*/
+    // PWR->CR2 |= PWR_CR2_USV; /* PWR_CR2_USV is available on STM32L4x2xx and STM32L4x3xx devices only. */
+    // usb_power_connect();
+    // PWR->CR2 |= PWR_CR2_USV;
+    // usbStart(&USBD1);
+    // usb_start(&USBD1);
+    // _usb_wakeup(&USBD1);
 
-        // wait_ms(15);
-    }
+    // clear_keyboard();
+    // restart_usb_driver(&USBD1);
+    // _usb_wakeup(&USBD1);
+    // usb_start(&USBD1);
+    // wait_ms(15);
+    // }
 
     // hsi48_init();
     // PWR->CR2 |= PWR_CR2_USV;
     // // host_set_driver(&chibios_driver);
     //     usb_start(&USBD1);
 
-
-    //不要用这个选项,会导致usb卡键
-    // restart_usb_driver(&USBD1);
+    // 不要用这个选项,会导致usb卡键
+    //  restart_usb_driver(&USBD1);
 
     // uart_init(z)
     sdInit();
@@ -186,10 +199,11 @@ void enter_power_mode_sleep(void) {
 }
 
 void stm32_clock_fast_init(void) {
-#if !STM32_NO_INIT
+#    if !STM32_NO_INIT
     /* Clocks setup.*/
     msi_init();   // 6.x us
     hsi16_init(); // 4.x us
+    hsi48_init();
 
     /* PLLs activation, if required.*/
     pll_init();
@@ -208,12 +222,12 @@ void stm32_clock_fast_init(void) {
                      STM32_UART5SEL  | STM32_UART4SEL  | STM32_USART3SEL |
                      STM32_USART2SEL | STM32_USART1SEL | STM32_LPUART1SEL;
 /* clang-format on */
-#    if STM32_SAI2SEL != STM32_SAI2SEL_OFF
+#        if STM32_SAI2SEL != STM32_SAI2SEL_OFF
         ccipr |= STM32_SAI2SEL;
-#    endif
-#    if STM32_SAI1SEL != STM32_SAI1SEL_OFF
+#        endif
+#        if STM32_SAI1SEL != STM32_SAI1SEL_OFF
         ccipr |= STM32_SAI1SEL;
-#    endif
+#        endif
         RCC->CCIPR = ccipr;
     }
 
@@ -225,12 +239,12 @@ void stm32_clock_fast_init(void) {
     }
 
     /* Switching to the configured SYSCLK source if it is different from MSI.*/
-#    if (STM32_SW != STM32_SW_MSI)
+#        if (STM32_SW != STM32_SW_MSI)
     RCC->CFGR |= STM32_SW; /* Switches on the selected clock source.   */
     /* Wait until SYSCLK is stable.*/
     while ((RCC->CFGR & RCC_CFGR_SWS) != (STM32_SW << 2))
         ;
-#    endif
+#        endif
 
     /* Reduce the flash WS's for SYSCLK source if they are less than MSI WSs */
     if (STM32_FLASHBITS < STM32_MSI_FLASHBITS) {
@@ -238,7 +252,7 @@ void stm32_clock_fast_init(void) {
         while ((FLASH->ACR & FLASH_ACR_LATENCY_Msk) != (STM32_FLASHBITS & FLASH_ACR_LATENCY_Msk)) {
         }
     }
-#endif /* STM32_NO_INIT */
+#    endif /* STM32_NO_INIT */
 }
 
 void lpm_init(void) {
@@ -308,7 +322,7 @@ void pm_reset(void) {
 }
 
 void housekeeping_task_kb(void) {
-    if (timer_elapsed32(pm_timer) >= 1000) // check if lpm has already timeout and if enough time has passed
+    if (timer_elapsed32(pm_timer) >= 2000) // check if lpm has already timeout and if enough time has passed
     {
         pm_timer = timer_read32();
         // // 如果满足pm条件，进入pm
@@ -319,7 +333,7 @@ void housekeeping_task_kb(void) {
         // }
         // if(usb_connected_state()) return;
 
-        if (!usb_connected_state() && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
+        if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
             enter_power_mode_stop1();
         }
     }
@@ -329,8 +343,6 @@ void housekeeping_task_kb(void) {
 //     // if (readPin(VBUS_DETECT_PIN)) {
 //         soft_reset_keyboard();
 // }
-
-
 
 // void palCallback_vbus_reset(void *arg) {
 //     // if (readPin(VBUS_DETECT_PIN)) {

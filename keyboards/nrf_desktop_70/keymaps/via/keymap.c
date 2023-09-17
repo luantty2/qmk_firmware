@@ -3,16 +3,14 @@
 
 #include QMK_KEYBOARD_H
 #include "blueism.h"
-#include "max1704x.h"
-#include <stdio.h>
+#include "battery.h"
 
 enum keycodes{
     UNPAIR = SAFE_RANGE,
     BAT_LVL,
 };
 
-static uint16_t bat_level;
-char bat_str[3];
+// static char bat_str[5];
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
@@ -39,39 +37,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_TRNS,    KC_TRNS, KC_TRNS, KC_VOLU,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_TRNS, KC_VOLD,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,
-        KC_TRNS,          KC_TRNS, UNPAIR , KC_TRNS, KC_TRNS, BAT_LVL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,             KC_TRNS,
+        KC_TRNS,          KC_TRNS, UNPAIR , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,             KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS
     )
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case UNPAIR:
-      if (record->event.pressed) {
-        // Do something when pressed
-        blueism_unpair();
-      } else {
-        // Do something else when release
-      }
-      return false;
-    case BAT_LVL:
-      if (record->event.pressed) {
-        // Do something when pressed
-        uint8_t bat_val;
-        if(bat_level > 99){
-            bat_val=99;
-        } else {
-            bat_val = bat_level;
-        }
-        sprintf(bat_str, "%d", bat_val);
-        send_string(bat_str);
-      } else {
-        // Do something else when release
-      }
-      return false;
-    default:
-      return true; // Process all other keyzcodes normally
-  }
+    switch (keycode) {
+        case UNPAIR:
+            if (record->event.pressed) {
+                // Do something when pressed
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    blueism_unpair();
+                }
+            } else {
+                // Do something else when release
+            }
+            return false;
+        case BAT_LVL:
+            if (record->event.pressed) {
+                // Do something when pressed
+                // get_battery_lvl_str(bat_str, ARRAY_SIZE(bat_str));
+                // send_string(bat_str);
+                // send_byte(get_battery_lvl());
+            } else {
+                // Do something else when release
+            }
+            return false;
+        default:
+            return true; // Process all other keyzcodes normally
+    }
 }
 
 /*simulate battery power consumption*/
@@ -88,20 +83,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //     }
 // }
 
-static uint32_t bat_poll_timer;
+// static uint32_t bat_poll_timer;
 
-void housekeeping_task_user(void) {
-    uint32_t timer_now = timer_read();
-    if ((TIMER_DIFF_32(timer_now, bat_poll_timer) >= 5000)) {
-        uint8_t soc_val[2];
-        max1704x_get_soc(soc_val);
+// void housekeeping_task_user(void) {
+//     uint32_t timer_now = timer_read();
+//     if ((TIMER_DIFF_32(timer_now, bat_poll_timer) >= 5000)) {
+//         uint8_t soc_val[2];
+//         max1704x_get_soc(soc_val);
 
-        uint16_t soc_combined = soc_val[1] | (soc_val[0] << 8);
+//         uint16_t soc_combined = soc_val[1] | (soc_val[0] << 8);
 
-        dprintf("soc: %d\n", soc_combined / 256);
+//         dprintf("soc: %d\n", soc_combined / 256);
 
-        bat_level = soc_combined;
+//         bat_level = soc_combined;
 
-        bat_poll_timer = timer_now;
-    }
-}
+//         bat_poll_timer = timer_now;
+//     }
+// }

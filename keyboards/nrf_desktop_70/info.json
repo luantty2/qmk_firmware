@@ -1,6 +1,6 @@
 {
     "manufacturer": "luantty2",
-    "keyboard_name": "nrf_desktop_70",
+    "keyboard_name": "nRF Desktop 70",
     "maintainer": "luantty2",
     "bootloader": "stm32-dfu",
     "diode_direction": "ROW2COL",

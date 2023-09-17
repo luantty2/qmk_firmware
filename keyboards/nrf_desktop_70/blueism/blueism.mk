@@ -7,6 +7,7 @@ ifeq ($(strip $(BLUETOOTH_ENABLE)$(BLUETOOTH_DRIVER)),yescustom)
           $(BLUEISM_DIR)/max1704x.c \
           $(BLUEISM_DIR)/hid_leds.c \
           $(BLUEISM_DIR)/lpm_stm32l43x.c \
+		  $(BLUEISM_DIR)/battery.c \
 
      QUANTUM_LIB_SRC += uart.c \
 	                    i2c_master.c
