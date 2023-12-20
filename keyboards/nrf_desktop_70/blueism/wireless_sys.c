@@ -5,15 +5,14 @@
 #include "bluetooth.h"
 #include "blueism.h"
 #include "usb_util.h"
+#include "usb_main.h"
 #include "outputselect.h"
 #include "config_blueism.h"
+#include "wireless_sys.h"
 #include "quantum.h"
-
-void output_manager_init(void);
 
 void bluetooth_init() {
     blueism_init();
-    output_manager_init();
 #ifdef MAX1704X_ENABLE
     battery_init();
 #endif
@@ -38,14 +37,24 @@ void bluetooth_send_consumer(uint16_t usage) {
 }
 
 void palCallback_vbus_sense(void *arg) {
-    if (usb_connected_state()) {
-        set_output(OUTPUT_USB);
+    if (readPin(VBUS_DETECT_PIN)) {
+        // if (usb_connected_state()) {
+        // while(1){
+        //     if(usb_connected_state()){
+        //         break;
+        //     }
+        // }
+        // clear_keyboard();
+        // usb_start(&USBD1);
+        // set_output(OUTPUT_USB);
     } else {
+        clear_keyboard();
         set_output(OUTPUT_BLUETOOTH);
     }
 }
 
 void output_manager_init(void) {
+    // if (readPin(VBUS_DETECT_PIN)) {
     if (usb_connected_state()) {
         set_output(OUTPUT_USB);
     } else {
@@ -54,3 +63,12 @@ void output_manager_init(void) {
     palEnableLineEvent(VBUS_DETECT_PIN, PAL_EVENT_MODE_BOTH_EDGES);
     palSetLineCallback(VBUS_DETECT_PIN, palCallback_vbus_sense, NULL);
 }
+
+// void output_scan(void) {
+//     // if (usb_connected_state()) {
+//     if(readPin(VBUS_DETECT_PIN)){
+//         set_output(OUTPUT_USB);
+//     } else {
+//         set_output(OUTPUT_BLUETOOTH);
+//     }
+// }

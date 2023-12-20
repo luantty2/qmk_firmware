@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "quantum.h"
 #include "outputselect.h"
+#include "wireless_sys.h"
 
 #define CAPS_LED A13
 
@@ -12,6 +13,8 @@ void keyboard_post_init_kb(void) {
     debug_mouse    = false;
 
     // set_output(OUTPUT_BLUETOOTH);
+    //this must be called here, not in "bluetooth_init()"
+    output_manager_init();
 
     keyboard_post_init_user();
 }

@@ -15,4 +15,6 @@
 #define I2C1_SDA_PIN B7
 #define I2C1_SDA_PAL_MODE 4
 
+#define DEBOUNCE 3
+
 // #define LED_CAPS_LOCK_PIN A13

@@ -15,11 +15,14 @@
 #define BLUEISM_UART_PACKET_LEN 16
 #define BLUEISM_UART_PACKET_COMMON_LEN 5
 #ifndef BLUEISM_UART_SEND_INTERVAL_MS
-#    define BLUEISM_UART_SEND_INTERVAL_MS 5
+#    define BLUEISM_UART_SEND_INTERVAL_MS 4
 #endif
 #ifndef SEND_BUFFER_SIZE
 #    define SEND_BUFFER_SIZE 256
 #endif
+
+// #undef SD1_CR2
+// #define SD1_CR2 USART_CR2_STOP1_BITS
 
 RingBuffer     send_buffer;
 static uint8_t send_buff_data[SEND_BUFFER_SIZE];

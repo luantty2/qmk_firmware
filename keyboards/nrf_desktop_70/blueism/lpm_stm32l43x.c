@@ -8,6 +8,8 @@
 #include "config_blueism.h"
 #include "hid_leds.h"
 #include "debounce.h"
+#include "wireless_sys.h"
+#include "outputselect.h"
 
 #define BOARD_PM
 
@@ -98,6 +100,11 @@ static inline void lpm_wakeup(void) {
     if (readPin(VBUS_DETECT_PIN)) {
         PWR->CR2 |= PWR_CR2_USV;
         usb_start(&USBD1);
+        usbConnectBus(&USBD1); // this fixes caps lock
+        wait_ms(500);  //Do need to wait here, or "usb_connected_state" will be false.
+        if(usb_connected_state()){
+            set_output(OUTPUT_USB);
+        }
     }
     /* Disable all wake up pins */
     for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
@@ -322,7 +329,8 @@ void pm_reset(void) {
 }
 
 void housekeeping_task_kb(void) {
-    if (timer_elapsed32(pm_timer) >= 2000) // check if lpm has already timeout and if enough time has passed
+    // output_scan();
+    if (timer_elapsed32(pm_timer) >= 1500) // check if lpm has already timeout and if enough time has passed
     {
         pm_timer = timer_read32();
         // // 如果满足pm条件，进入pm
