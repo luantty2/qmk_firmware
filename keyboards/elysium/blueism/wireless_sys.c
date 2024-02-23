@@ -44,18 +44,28 @@ void palCallback_vbus_sense(void *arg) {
         //         break;
         //     }
         // }
-        // clear_keyboard();
+        clear_keyboard();
+
+        PWR->CR2 |= PWR_CR2_USV;
+        usb_start(&USBD1);
+        usbConnectBus(&USBD1);
+
         // usb_start(&USBD1);
-        // set_output(OUTPUT_USB);
+        set_output(OUTPUT_USB);
     } else {
         clear_keyboard();
+
+        usbStop(&USBD1);
+        usbDisconnectBus(&USBD1);
+        PWR->CR2 &= ~PWR_CR2_USV;
+
         set_output(OUTPUT_BLUETOOTH);
     }
 }
 
 void output_manager_init(void) {
-    // if (readPin(VBUS_DETECT_PIN)) {
-    if (usb_connected_state()) {
+    if (readPin(VBUS_DETECT_PIN)) {
+    // if (usb_connected_state()) {
         set_output(OUTPUT_USB);
     } else {
         set_output(OUTPUT_BLUETOOTH);

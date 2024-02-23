@@ -7,7 +7,7 @@
 #include "blueism.h"
 #include <stdio.h>
 
-#define MAX1704X_POLLING_MS 1000
+#define MAX1704X_POLLING_MS 2000
 #define MAX1704X_INIT_DELAY_MS 100
 // #define MAX1704X_VRESET 0x6C //2700mV
 #define MAX1704X_VRESET 0x60 // 2400mV

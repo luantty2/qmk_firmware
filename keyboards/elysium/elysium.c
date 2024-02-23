@@ -3,6 +3,7 @@
 #include "quantum.h"
 #include "outputselect.h"
 #include "wireless_sys.h"
+#include "hid_leds.h"
 
 #ifdef RGB_MATRIX_ENABLE
 const is31_led PROGMEM g_is31_leds[IS31FL3733_LED_COUNT] = {
@@ -106,7 +107,7 @@ void keyboard_post_init_kb(void) {
 
 #ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
-    if (host_keyboard_led_state().caps_lock) {
+    if (host_keyboard_led_state().caps_lock || get_hid_leds_state()) {
         HSV hsv = rgb_matrix_get_hsv();
         RGB rgb;
         if (hsv.h % 191 > 0) {

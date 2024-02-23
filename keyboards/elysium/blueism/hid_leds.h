@@ -5,3 +5,4 @@
 void hid_leds_init(void);
 void enable_leds_cb(void);
 void disable_leds_cb(void);
+bool get_hid_leds_state(void);

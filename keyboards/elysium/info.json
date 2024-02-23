@@ -15,6 +15,7 @@
     },
     "rgb_matrix": {
         "animations": {
+          "solid_color": true,
           "alphas_mods": true,
           "gradient_up_down": true,
           "gradient_left_right": true,
@@ -41,11 +42,11 @@
           "hue_breathing": true,
           "hue_pendulum": true,
           "hue_wave": true,
-          "pixel_rain": true,
-          "pixel_flow": true,
-          "pixel_fractal": true,
+          "pixel_rain": false,
+          "pixel_flow": false,
+          "pixel_fractal": false,
           "typing_heatmap": true,
-          "digital_rain": true,
+          "digital_rain": false,
           "solid_reactive_simple": true,
           "solid_reactive": true,
           "solid_reactive_wide": true,
@@ -79,8 +80,8 @@
 
             { "flags": 4, "matrix": [2, 0], "x": 5, "y": 16 },
             { "flags": 4, "matrix": [1, 1], "x": 28, "y": 16 },
-            { "flags": 12, "matrix": [1, 1], "x": 49, "y": 16 },
-            { "flags": 12, "matrix": [1, 1], "x": 63, "y": 18 },
+            { "flags": 12, "matrix": [1, 2], "x": 49, "y": 16 },
+            { "flags": 12, "matrix": [1, 3], "x": 63, "y": 18 },
             { "flags": 12, "matrix": [1, 4], "x": 77, "y": 20 },
             { "flags": 12, "matrix": [1, 5], "x": 91, "y": 22 },
             { "flags": 4, "matrix": [0, 5], "x": 98, "y": 6 },
@@ -112,13 +113,13 @@
             { "flags": 4, "matrix": [4, 13], "x": 215, "y": 32 },
 
 
-            { "flags": 12, "matrix": [4, 0], "x": 0, "y": 48 },
-            { "flags": 12, "matrix": [3, 1], "x": 27, "y": 48 },
+            { "flags": 4, "matrix": [4, 0], "x": 0, "y": 48 },
+            { "flags": 4, "matrix": [3, 1], "x": 27, "y": 48 },
             { "flags": 12, "matrix": [3, 2], "x": 55, "y": 48 },
             { "flags": 12, "matrix": [3, 3], "x": 73, "y": 50 },
             { "flags": 12, "matrix": [3, 4], "x": 87, "y": 52 },
-            { "flags": 4, "matrix": [3, 5], "x": 101, "y": 54 },
-            { "flags": 4, "matrix": [2, 6], "x": 110, "y": 40 },
+            { "flags": 12, "matrix": [3, 5], "x": 101, "y": 54 },
+            { "flags": 12, "matrix": [2, 6], "x": 110, "y": 40 },
 
             { "flags": 12, "matrix": [3, 7], "x": 121, "y": 56 },
             { "flags": 12, "matrix": [3, 8], "x": 135, "y": 54 },
@@ -146,7 +147,7 @@
         "driver": "is31fl3733",
         "led_count": 68,
         "sleep": true,
-        "timeout": 10000
+        "timeout": 1200000
       },
     "matrix_pins": {
         "cols": ["B11", "B2", "B10", "B8", "B9", "B3", "A15", "A7", "B0", "A6", "A5", "A14", "B1", "A4"],

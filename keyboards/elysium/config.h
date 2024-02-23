@@ -19,6 +19,9 @@
 #define DRIVER_SYNC_1 0b01
 #define DRIVER_SYNC_2 0b10
 
+#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#define RGB_MATRIX_KEYPRESSES
+
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.

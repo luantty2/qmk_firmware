@@ -8,6 +8,7 @@ enum keycodes{
     UNPAIR = SAFE_RANGE,
     F_UNPAIR,
     BAT_LVL,
+    RF_RESET,
 };
 
 #include QMK_KEYBOARD_H
@@ -24,7 +25,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-        _______,  _______,  _______,  UNPAIR,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+        _______,  _______,  _______,  UNPAIR,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  RF_RESET,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______
     ),
 };
@@ -55,6 +56,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // get_battery_lvl_str(bat_str, ARRAY_SIZE(bat_str));
                 // send_string(bat_str);
                 // send_byte(get_battery_lvl());
+            } else {
+                // Do something else when release
+            }
+            return false;
+        case RF_RESET:
+            if (record->event.pressed) {
+                // Do something when pressed
+                writePinLow(NRF_RESET);
+                matrix_io_delay();
+                writePinHigh(NRF_RESET);
             } else {
                 // Do something else when release
             }

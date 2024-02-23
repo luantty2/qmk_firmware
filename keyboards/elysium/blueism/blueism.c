@@ -3,7 +3,6 @@
 #include "quantum.h"
 #include "uart.h"
 #include "blueism.h"
-#include "config_blueism.h"
 #include "ringbuffer.h"
 #include "hid_leds.h"
 #include "max1704x.h"
@@ -15,7 +14,7 @@
 #define BLUEISM_UART_PACKET_LEN 16
 #define BLUEISM_UART_PACKET_COMMON_LEN 5
 #ifndef BLUEISM_UART_SEND_INTERVAL_MS
-#    define BLUEISM_UART_SEND_INTERVAL_MS 6
+#    define BLUEISM_UART_SEND_INTERVAL_MS 7
 #endif
 #ifndef SEND_BUFFER_SIZE
 #    define SEND_BUFFER_SIZE 256
@@ -54,6 +53,17 @@ void blueism_init(void) {
     setPinInput(VBUS_DETECT_PIN);
 #ifdef HIDS_LEDS_ENABLE
     hid_leds_init();
+#endif
+    setPinOutput(NRF_RESET);
+    writePinHigh(NRF_RESET);
+
+#ifdef RGB_MATRIX_ENABLE
+    setPinOutput(RGB_SHUTDOWN_PIN);
+    if (rgb_matrix_is_enabled()) {
+        writePinHigh(RGB_SHUTDOWN_PIN);
+    } else {
+        writePinLow(RGB_SHUTDOWN_PIN);
+    }
 #endif
 }
 

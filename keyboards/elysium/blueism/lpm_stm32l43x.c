@@ -102,10 +102,10 @@ static inline void lpm_wakeup(void) {
         PWR->CR2 |= PWR_CR2_USV;
         usb_start(&USBD1);
         usbConnectBus(&USBD1); // this fixes caps lock
-        wait_ms(500);          // Do need to wait here, or "usb_connected_state" will be false.
-        if (usb_connected_state()) {
-            set_output(OUTPUT_USB);
-        }
+        // wait_ms(500);          // Do need to wait here, or "usb_connected_state" will be false.
+        // if (usb_connected_state()) {
+        set_output(OUTPUT_USB);
+        // }
     }
     /* Disable all wake up pins */
     for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
@@ -345,11 +345,14 @@ void housekeeping_task_kb(void) {
         // if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
         //     enter_power_mode_stop1();
         // }
-        if (!readPin(VBUS_DETECT_PIN) && !lpm_any_matrix_action()) {         // 如果没有usb电源或没有按键
-            if (rgb_matrix_is_enabled() && rgb_matrix_get_suspend_state()) { // 如果rgb开启并且已经进入了suspend，休眠
-                enter_power_mode_stop1();
-            } else if (rgb_matrix_is_enabled() && !rgb_matrix_get_suspend_state()) { // 如果rgb开启并且没有进入suspend，不休眠
-            } else if (!rgb_matrix_is_enabled()) {                                   // 如果没有开启rgb，休眠
+        if (!readPin(VBUS_DETECT_PIN) && !lpm_any_matrix_action()) { // 如果没有usb电源或没有按键
+            // if (rgb_matrix_is_enabled() && rgb_matrix_get_suspend_state()) { // 如果rgb开启并且已经进入了suspend，休眠
+            //     enter_power_mode_stop1();
+            // } else if (rgb_matrix_is_enabled() && !rgb_matrix_get_suspend_state()) { // 如果rgb开启并且没有进入suspend，不休眠
+            // } else if (!rgb_matrix_is_enabled()) {                                   // 如果没有开启rgb，休眠
+            //     enter_power_mode_stop1();
+            // }
+            if (!rgb_matrix_is_enabled()) { // 只有rgb matrix关闭的时候才进入睡眠（如果rgb已经开启并超时，不会进入睡眠）
                 enter_power_mode_stop1();
             }
         }
@@ -374,5 +377,5 @@ void housekeeping_task_kb(void) {
     //     palEnableLineEvent(VBUS_DETECT_PIN, PAL_EVENT_MODE_FALLING_EDGE );
     //     palSetLineCallback(VBUS_DETECT_PIN, palCallback_vbus_reset, NULL);
     // }
-
+}
 #endif
