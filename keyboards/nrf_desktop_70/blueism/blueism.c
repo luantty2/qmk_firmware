@@ -183,7 +183,7 @@ void blueism_task(void) {
             if (readPin(SLEEP_STATUS_PIN)) { // if sleeping
                 setPinOutput(WAKEUP_PIN);
                 writePinLow(WAKEUP_PIN);
-                wait_ms(150);
+                wait_ms(100);
                 /*Do not send here, will stuck the BT module */
                 // uart_transmit(data, sizeof(data));
                 setPinInputHigh(WAKEUP_PIN);
