@@ -12,10 +12,10 @@
 #include "stdio.h"
 
 #define BLUEISM_UART_BAUDRATE 115200
-#define BLUEISM_UART_PACKET_LEN 16
-#define BLUEISM_UART_PACKET_COMMON_LEN 5
+#define BLUEISM_UART_PACKET_LEN 8
+#define BLUEISM_UART_PACKET_COMMON_LEN 1
 #ifndef BLUEISM_UART_SEND_INTERVAL_MS
-#    define BLUEISM_UART_SEND_INTERVAL_MS 7
+#    define BLUEISM_UART_SEND_INTERVAL_MS 10
 #endif
 #ifndef SEND_BUFFER_SIZE
 #    define SEND_BUFFER_SIZE 256
@@ -65,22 +65,22 @@ blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t pa
     uint8_t packet[BLUEISM_UART_PACKET_LEN] = {0};
 
     // Calculate checksum
-    uint16_t checksum = 0;
-    checksum += 0xAA;
-    checksum += cmd;
-    checksum += payload_len;
-    for (uint8_t i = 0; i < payload_len; i++) {
-        checksum += payload[i];
-    }
-    checksum -= 0x55;
+    // uint16_t checksum = 0;
+    // checksum += 0xAA;
+    // checksum += cmd;
+    // checksum += payload_len;
+    // for (uint8_t i = 0; i < payload_len; i++) {
+    //     checksum += payload[i];
+    // }
+    // checksum -= 0x55;
 
     // Fill packet
-    packet[0] = 0xAA;
-    packet[1] = cmd;
-    packet[2] = payload_len;
-    memcpy(packet + 3, payload, payload_len);
-    packet[BLUEISM_UART_PACKET_LEN - 2] = checksum & 0xFF;
-    packet[BLUEISM_UART_PACKET_LEN - 1] = '\n';
+    // packet[0] = 0xAA;
+    packet[0] = cmd;
+    // packet[2] = payload_len;
+    memcpy(packet + 1, payload, payload_len);
+    // packet[BLUEISM_UART_PACKET_LEN - 2] = checksum & 0xFF;
+    // packet[BLUEISM_UART_PACKET_LEN - 1] = '\n';
 
 #ifdef DEBUG_BLUEISM_UART_PACKET
     for (uint8_t i = 0; i < BLUEISM_UART_PACKET_LEN; i++) {
@@ -170,9 +170,9 @@ void blueism_task(void) {
     // uint32_t timer_now = timer_read();
     if (!ringBufferEmpty(&send_buffer) && timer_elapsed32(send_timer) >= BLUEISM_UART_SEND_INTERVAL_MS) {
         send_timer = timer_read32();
-        // lpm_timer_reset();
+        lpm_timer_reset();
 #ifdef BOARD_PM
-        pm_reset();
+        // pm_reset();
 #endif
         if (ringBufferLen(&send_buffer) % BLUEISM_UART_PACKET_LEN != 0) {
             dprintf("Corrupted data in sending buffer\n");
@@ -183,13 +183,15 @@ void blueism_task(void) {
             if (readPin(SLEEP_STATUS_PIN)) { // if sleeping
                 setPinOutput(WAKEUP_PIN);
                 writePinLow(WAKEUP_PIN);
-                wait_ms(100);
+                // wait_ms(30);
+                matrix_io_delay();
                 /*Do not send here, will stuck the BT module */
                 // uart_transmit(data, sizeof(data));
                 setPinInputHigh(WAKEUP_PIN);
                 // dprintf("High, sleeping\n");
 
             } else {
+                // lpm_timer_reset();
                 ringBufferGetMultiple(&send_buffer, data, sizeof(data));
                 uart_transmit(data, sizeof(data));
                 // dprintf("LOW, not sleeping\n");

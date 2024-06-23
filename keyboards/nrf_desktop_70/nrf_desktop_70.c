@@ -7,7 +7,7 @@
 #define CAPS_LED A13
 
 void keyboard_post_init_kb(void) {
-    debug_enable   = false;
+    debug_enable   = true;
     debug_matrix   = false;
     debug_keyboard = false;
     debug_mouse    = false;

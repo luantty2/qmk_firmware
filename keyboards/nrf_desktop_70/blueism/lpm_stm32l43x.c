@@ -93,7 +93,7 @@ static inline void lpm_wakeup(void) {
     // init_usb_driver(&USBD1);
     // restart_usb_driver(&USBD1);
     /* TIMx is disable during stop/standby/sleep mode, init after wakeup */
-    stInit();
+    // stInit();
     timer_init();
     chSysUnlock();
 
@@ -101,8 +101,8 @@ static inline void lpm_wakeup(void) {
         PWR->CR2 |= PWR_CR2_USV;
         usb_start(&USBD1);
         usbConnectBus(&USBD1); // this fixes caps lock
-        wait_ms(500);  //Do need to wait here, or "usb_connected_state" will be false.
-        if(usb_connected_state()){
+        wait_ms(500);          // Do need to wait here, or "usb_connected_state" will be false.
+        if (usb_connected_state()) {
             set_output(OUTPUT_USB);
         }
     }
@@ -150,60 +150,64 @@ static inline void lpm_wakeup(void) {
     //  restart_usb_driver(&USBD1);
 
     // uart_init(z)
-    sdInit();
-    SerialConfig config = {115200, 0, 0, 0};
-    sdStart(&SERIAL_DRIVER, &config);
 
-    // wait_ms(1);
+    sdInit();
+    SerialConfig config = {115200, 0, USART_CR2_STOP1_BITS, 0};
+    sdStart(&SERIAL_DRIVER, &config);
+    palSetLineMode(SD1_TX_PIN, PAL_MODE_ALTERNATE(SD1_TX_PAL_MODE) | PAL_OUTPUT_TYPE_PUSHPULL | PAL_OUTPUT_SPEED_HIGHEST);
+    palSetLineMode(SD1_RX_PIN, PAL_MODE_ALTERNATE(SD1_RX_PAL_MODE) | PAL_OUTPUT_TYPE_PUSHPULL | PAL_OUTPUT_SPEED_HIGHEST);
+
+    // wait_ms(10);
 }
 
-void enter_power_mode(pm_t mode) {
-    if (!lpm_set(mode)) {
+// void enter_power_mode(pm_t mode) {
+//     if (!lpm_set(mode)) {
+//         return;
+//     }
+//     enter_low_power_mode_prepare();
+
+//     __WFI();
+
+//     lpm_wakeup();
+//     lpm_timer_reset();
+
+//     debounce_free();
+//     matrix_init();
+//     power_mode = PM_RUN;
+// }
+
+void enter_power_mode_stop1(void) {
+    if (!lpm_set(PM_STOP1)) {
         return;
     }
+    lpm_timer_stop();
     enter_low_power_mode_prepare();
 
     __WFI();
 
     lpm_wakeup();
     lpm_timer_reset();
-
+    // pm_reset();
     debounce_free();
     matrix_init();
     power_mode = PM_RUN;
 }
 
-void enter_power_mode_stop1(void) {
-    if (!lpm_set(PM_STOP1)) {
-        return;
-    }
-    enter_low_power_mode_prepare();
+// void enter_power_mode_sleep(void) {
+//     if (!lpm_set(PM_SLEEP)) {
+//         return;
+//     }
+//     enter_low_power_mode_prepare();
 
-    __WFI();
+//     __WFI();
 
-    lpm_wakeup();
-    // lpm_timer_reset();
-    pm_reset();
-    debounce_free();
-    matrix_init();
-    power_mode = PM_RUN;
-}
-
-void enter_power_mode_sleep(void) {
-    if (!lpm_set(PM_SLEEP)) {
-        return;
-    }
-    enter_low_power_mode_prepare();
-
-    __WFI();
-
-    lpm_wakeup();
-    // lpm_timer_reset();
-    pm_reset();
-    debounce_free();
-    matrix_init();
-    power_mode = PM_RUN;
-}
+//     lpm_wakeup();
+//     // lpm_timer_reset();
+//     pm_reset();
+//     debounce_free();
+//     matrix_init();
+//     power_mode = PM_RUN;
+// }
 
 void stm32_clock_fast_init(void) {
 #    if !STM32_NO_INIT
@@ -280,22 +284,22 @@ static inline bool lpm_any_matrix_action(void) {
     return memcmp(matrix, empty_matrix, sizeof(empty_matrix));
 }
 
-void lpm_task(void) {
-    // if (readPin(VBUS_DETECT_PIN)) {
-    //     lpm_timer_stop();
-    //     return;
-    // }
+// void lpm_task(void) {
+//     // if (readPin(VBUS_DETECT_PIN)) {
+//     //     lpm_timer_stop();
+//     //     return;
+//     // }
 
-    if (!lpm_time_up && sync_timer_elapsed32(lpm_timer_buffer) > 1000) {
-        lpm_time_up      = true;
-        lpm_timer_buffer = 0;
-    }
+//     if (!lpm_time_up && sync_timer_elapsed32(lpm_timer_buffer) > 1000) {
+//         lpm_time_up      = true;
+//         lpm_timer_buffer = 0;
+//     }
 
-    if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && lpm_time_up && !lpm_any_matrix_action()) {
-        // lpm_timer_reset();  //解决usb插入后拔出，键盘卡死的问题,未解决
-        enter_power_mode_stop1();
-    }
-}
+//     if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && lpm_time_up && !lpm_any_matrix_action()) {
+//         // lpm_timer_reset();  //解决usb插入后拔出，键盘卡死的问题,未解决
+//         enter_power_mode_stop1();
+//     }
+// }
 
 // void housekeeping_task_kb(void) {
 //     lpm_task();
@@ -322,29 +326,68 @@ void lpm_task(void) {
 //     // }
 // }
 
-static uint32_t pm_timer;
+// static uint32_t pm_timer;
 
-void pm_reset(void) {
-    pm_timer = timer_read32();
-}
+// void pm_reset(void) {
+//     pm_timer = timer_read32();
+// }
+
+// void housekeeping_task_kb(void) {
+//     // output_scan();
+//     if (timer_elapsed32(pm_timer) >= 1500) // check if lpm has already timeout and if enough time has passed
+//     {
+//         pm_timer = timer_read32();
+//         // // 如果满足pm条件，进入pm
+//         // if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
+//         //     enter_power_mode_stop1();
+//         // } else {
+//         //     // pm_reset();
+//         // }
+//         // if(usb_connected_state()) return;
+
+//         if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
+//             enter_power_mode_stop1();
+//         }
+//     }
+// }
 
 void housekeeping_task_kb(void) {
-    // output_scan();
-    if (timer_elapsed32(pm_timer) >= 1500) // check if lpm has already timeout and if enough time has passed
-    {
-        pm_timer = timer_read32();
-        // // 如果满足pm条件，进入pm
-        // if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
-        //     enter_power_mode_stop1();
-        // } else {
-        //     // pm_reset();
-        // }
-        // if(usb_connected_state()) return;
+    // // output_scan();
+    // if (timer_elapsed32(pm_timer) >= 1500) // check if lpm has already timeout and if enough time has passed
+    // {
+    //     pm_timer = timer_read32();
+    //     // // 如果满足pm条件，进入pm
+    //     // if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
+    //     //     enter_power_mode_stop1();
+    //     // } else {
+    //     //     // pm_reset();
+    //     // }
+    //     // if(usb_connected_state()) return;
 
-        if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
-            enter_power_mode_stop1();
-        }
+    //     if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action()) {
+    //         enter_power_mode_stop1();
+    //     }
+    // }
+    if (!lpm_time_up && sync_timer_elapsed32(lpm_timer_buffer) > 1500) {
+        lpm_time_up      = true;
+        lpm_timer_buffer = 0;
     }
+
+    if (!readPin(VBUS_DETECT_PIN) && readPin(CAPS_LED_PIN) && !lpm_any_matrix_action() && lpm_time_up) {
+        enter_power_mode_stop1();
+    }
+
+
+    //     if (get_transport() == TRANSPORT_BLUETOOTH && lpm_time_up && !indicator_is_running()
+    // #    ifdef LED_MATRIX_ENABLE
+    //         && led_matrix_is_driver_shutdown()
+    // #    endif
+    // #    ifdef RGB_MATRIX_ENABLE
+    //         && rgb_matrix_is_driver_shutdown()
+    // #    endif
+    //         && !lpm_any_matrix_action() && !battery_power_on_sample())
+
+    //         enter_power_mode(LOW_POWER_MODE);
 }
 
 // void palCallback_vbus_reset_full(void *arg) {
