@@ -34,6 +34,12 @@ void restart_usb_driver(USBDriver *usbp);
 
 bool send_report(usb_endpoint_in_lut_t endpoint, void *report, size_t size);
 
+/* Wakeup the USB driver */
+void usb_wakeup(USBDriver *usbp);
+
+/* Start the USB driver */
+void usb_start(USBDriver *usbp);
+
 /* ---------------
  * USB Event queue
  * ---------------
