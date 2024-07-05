@@ -11,10 +11,10 @@
 #include "stdio.h"
 
 #define BLUEISM_UART_BAUDRATE 115200
-#define BLUEISM_UART_PACKET_LEN 16
-#define BLUEISM_UART_PACKET_COMMON_LEN 5
+#define BLUEISM_UART_PACKET_LEN 8
+#define BLUEISM_UART_PACKET_COMMON_LEN 1
 #ifndef BLUEISM_UART_SEND_INTERVAL_MS
-#    define BLUEISM_UART_SEND_INTERVAL_MS 7
+#    define BLUEISM_UART_SEND_INTERVAL_MS 5
 #endif
 #ifndef SEND_BUFFER_SIZE
 #    define SEND_BUFFER_SIZE 256
@@ -57,6 +57,18 @@ void blueism_init(void) {
     setPinOutput(NRF_RESET);
     writePinHigh(NRF_RESET);
 
+    setPinOutput(NRF_BUTTON_UNPAIR_PIN);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+
+    setPinOutput(WIRELESS_MODE_SEL_PIN);
+    mode_config.raw = eeconfig_read_kb();
+    if (mode_config.is_ble) {
+        writePinHigh(WIRELESS_MODE_SEL_PIN);
+    } else {
+        writePinLow(WIRELESS_MODE_SEL_PIN);
+
+    }
+
 #ifdef RGB_MATRIX_ENABLE
     setPinOutput(RGB_SHUTDOWN_PIN);
     if (rgb_matrix_is_enabled()) {
@@ -67,6 +79,14 @@ void blueism_init(void) {
 #endif
 }
 
+void eeconfig_init_kb(void) {
+    mode_config.raw    = 0;
+    mode_config.is_ble = true;           // We want this enabled by default
+    eeconfig_update_kb(mode_config.raw); // Write default value to EEPROM now
+
+    writePinHigh(WIRELESS_MODE_SEL_PIN);
+}
+
 blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t payload_len) {
     if ((payload_len > BLUEISM_UART_PACKET_LEN - BLUEISM_UART_PACKET_COMMON_LEN)) {
         dprintf("Invalid payload length: %d\n", payload_len);
@@ -75,22 +95,22 @@ blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t pa
     uint8_t packet[BLUEISM_UART_PACKET_LEN] = {0};
 
     // Calculate checksum
-    uint16_t checksum = 0;
-    checksum += 0xAA;
-    checksum += cmd;
-    checksum += payload_len;
-    for (uint8_t i = 0; i < payload_len; i++) {
-        checksum += payload[i];
-    }
-    checksum -= 0x55;
+    // uint16_t checksum = 0;
+    // checksum += 0xAA;
+    // checksum += cmd;
+    // checksum += payload_len;
+    // for (uint8_t i = 0; i < payload_len; i++) {
+    //     checksum += payload[i];
+    // }
+    // checksum -= 0x55;
 
     // Fill packet
-    packet[0] = 0xAA;
-    packet[1] = cmd;
-    packet[2] = payload_len;
-    memcpy(packet + 3, payload, payload_len);
-    packet[BLUEISM_UART_PACKET_LEN - 2] = checksum & 0xFF;
-    packet[BLUEISM_UART_PACKET_LEN - 1] = '\n';
+    // packet[0] = 0xAA;
+    packet[0] = cmd;
+    // packet[2] = payload_len;
+    memcpy(packet + 1, payload, payload_len);
+    // packet[BLUEISM_UART_PACKET_LEN - 2] = checksum & 0xFF;
+    // packet[BLUEISM_UART_PACKET_LEN - 1] = '\n';
 
 #ifdef DEBUG_BLUEISM_UART_PACKET
     for (uint8_t i = 0; i < BLUEISM_UART_PACKET_LEN; i++) {
@@ -166,12 +186,59 @@ void blueism_battery_update(uint8_t bat_level) {
     }
 }
 
-void blueism_unpair() {
+void blueism_unpair(void) {
     blueism_send_status_t ret = blueism_send_cmd(CMD_BT_UNPAIR, NULL, 0);
     if (ret != BLUEISM_SEND_STATUS_SUCCESS) {
         dprintf("Failed to send unpair command\n");
         send_err_cnt++;
     }
+}
+
+void blueism_ble_button_unpair(void) {
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(50);
+
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+}
+
+void blueism_dongle_button_unpair(void) {
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(1100);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(50);
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinLow(NRF_BUTTON_UNPAIR_PIN);
+    wait_ms(20);
+    writePinHigh(NRF_BUTTON_UNPAIR_PIN);
+}
+
+void blueism_select_ble(void) {
+    mode_config.is_ble = true;
+    eeconfig_update_kb(mode_config.raw); // Writes the new status to EEPROM
+    writePinHigh(WIRELESS_MODE_SEL_PIN);
+}
+
+void blueism_select_2g4(void) {
+    mode_config.is_ble = false;
+    eeconfig_update_kb(mode_config.raw);
+    writePinLow(WIRELESS_MODE_SEL_PIN);
 }
 
 void blueism_task(void) {
@@ -180,9 +247,9 @@ void blueism_task(void) {
     // uint32_t timer_now = timer_read();
     if (!ringBufferEmpty(&send_buffer) && timer_elapsed32(send_timer) >= BLUEISM_UART_SEND_INTERVAL_MS) {
         send_timer = timer_read32();
-        // lpm_timer_reset();
+        lpm_timer_reset();
 #ifdef BOARD_PM
-        pm_reset();
+        // pm_reset();
 #endif
         if (ringBufferLen(&send_buffer) % BLUEISM_UART_PACKET_LEN != 0) {
             dprintf("Corrupted data in sending buffer\n");
@@ -193,7 +260,8 @@ void blueism_task(void) {
             if (readPin(SLEEP_STATUS_PIN)) { // if sleeping
                 setPinOutput(WAKEUP_PIN);
                 writePinLow(WAKEUP_PIN);
-                wait_ms(100);
+                // wait_ms(100);
+                matrix_io_delay();
                 /*Do not send here, will stuck the BT module */
                 // uart_transmit(data, sizeof(data));
                 setPinInputHigh(WAKEUP_PIN);

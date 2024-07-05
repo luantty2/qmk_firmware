@@ -35,6 +35,15 @@ typedef struct {
     uint8_t usage_l;
 } __attribute__((packed)) blueism_report_consumer_t;
 
+typedef union {
+    uint32_t raw;
+    struct {
+        bool is_ble : 1;
+    };
+} mode_config_t;
+
+mode_config_t mode_config;
+
 void                  blueism_init(void);
 void                  blueism_task(void);
 blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t* payload, uint8_t payload_len);
@@ -43,3 +52,7 @@ void                  blueism_send_mouse(report_mouse_t* report);
 void                  blueism_send_consumer(uint16_t usage);
 void                  blueism_battery_update(uint8_t bat_level);
 void                  blueism_unpair(void);
+void                  blueism_ble_button_unpair(void);
+void                  blueism_dongle_button_unpair(void);
+void                  blueism_select_ble(void);
+void                  blueism_select_2g4(void);

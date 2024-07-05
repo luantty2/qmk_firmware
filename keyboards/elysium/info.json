@@ -3,6 +3,7 @@
     "keyboard_name": "Elysium",
     "maintainer": "luantty2",
     "bootloader": "stm32-dfu",
+    "debounce": 3,
     "diode_direction": "ROW2COL",
     "features": {
         "bootmagic": true,

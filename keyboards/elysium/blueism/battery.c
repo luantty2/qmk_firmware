@@ -55,12 +55,25 @@ void battery_task(void) {
 
 uint8_t get_battery_lvl(void) {
 #ifdef BAT_CHEAT
-    return bat_lvl >= 98 ? 100 : bat_lvl;
+    return bat_lvl >= 97 ? 100 : bat_lvl;
 #else
     return bat_lvl;
 #endif
 }
 
-void get_battery_lvl_str(char *bat_str, size_t size) {
-    snprintf(bat_str, size, "%d", get_battery_lvl());
+uint8_t get_battery_lvl_blurry(void) {
+    return MAX(MIN(bat_lvl / 10, 9), 0);
+
+}
+
+void get_battery_lvl_str(char *bat_str, size_t size, bool blurry) {
+    if(!blurry){
+        snprintf(bat_str, size, "%d", get_battery_lvl());
+    } else {
+        snprintf(bat_str, size, "%d", get_battery_lvl_blurry());
+    }
+}
+
+void reset_battery(void){
+    max1704x_soft_reset();
 }

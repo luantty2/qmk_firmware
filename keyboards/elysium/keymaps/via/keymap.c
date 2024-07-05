@@ -3,15 +3,23 @@
 #include QMK_KEYBOARD_H
 #include "blueism.h"
 #include "battery.h"
+#include "max1704x.h"
 
 enum keycodes{
-    UNPAIR = SAFE_RANGE,
-    F_UNPAIR,
+    BLUETOOTH_UNPAIR = QK_KB_0,
+    DONGLE_UNPAIR,
     BAT_LVL,
-    RF_RESET,
+    MODULE_RESET,
+    GET_VER,
+    SEL_BLE,
+    SEL_2G4,
 };
 
-#include QMK_KEYBOARD_H
+#define BT_UNPR BLUETOOTH_UNPAIR
+#define DG_UNPR DONGLE_UNPAIR
+#define M_RESET MODULE_RESET
+
+static char bat_str[2];
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
@@ -19,33 +27,45 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_DEL,   KC_TAB,   KC_Q,   KC_W,     KC_E,    KC_R,    KC_T,   KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
         KC_PGUP,  KC_CAPS,  KC_A,   KC_S,     KC_D,    KC_F,    KC_G,   KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
         KC_PGDN,  KC_LSFT,  KC_Z,   KC_X,     KC_C,    KC_V,    KC_B,   KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_UP,    KC_RSFT,
-        KC_LCTL,  KC_LGUI,  KC_NO,  KC_LALT,  KC_SPC,  KC_SPC,  MO(1),  KC_LEFT,  KC_DOWN,  KC_RIGHT
+        KC_LCTL,  KC_LGUI,  DG_UNPR,  KC_LALT,  KC_SPC,  KC_SPC,  MO(1),  KC_LEFT,  KC_DOWN,  KC_RIGHT
     ),
     [1] = LAYOUT(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+        QK_BOOT,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-        _______,  _______,  _______,  UNPAIR,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  RF_RESET,  _______,  _______,
+        SEL_BLE,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+        SEL_2G4,  _______,  _______,  BT_UNPR,  _______,  GET_VER,  BAT_LVL,  BAT_LVL,  _______,  M_RESET,  _______,  _______,  _______, _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______
     ),
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case UNPAIR:
+        case QK_BOOT:
             if (record->event.pressed) {
-                // Do something when pressed
                 if (get_mods() & MOD_MASK_SHIFT) {
-                    blueism_unpair();
+                    eeconfig_init();
+                    reset_keyboard();
                 }
             } else {
                 // Do something else when release
             }
             return false;
-        case F_UNPAIR:
+        case BLUETOOTH_UNPAIR:
             if (record->event.pressed) {
                 // Do something when pressed
-                blueism_unpair();
+                // if (get_mods() & MOD_MASK_SHIFT) {
+                //     blueism_unpair();
+                // }
+                blueism_ble_button_unpair();
+            } else {
+                // Do something else when release
+            }
+            return false;
+        case DONGLE_UNPAIR:
+            if (record->event.pressed) {
+                // Do something when pressed
+                // blueism_unpair();
+                blueism_dongle_button_unpair();
             } else {
                 // Do something else when release
             }
@@ -53,19 +73,46 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case BAT_LVL:
             if (record->event.pressed) {
                 // Do something when pressed
-                // get_battery_lvl_str(bat_str, ARRAY_SIZE(bat_str));
-                // send_string(bat_str);
+                get_battery_lvl_str(bat_str, ARRAY_SIZE(bat_str), true);
+                send_string(bat_str);
                 // send_byte(get_battery_lvl());
             } else {
                 // Do something else when release
             }
             return false;
-        case RF_RESET:
+        case MODULE_RESET:
             if (record->event.pressed) {
                 // Do something when pressed
-                writePinLow(NRF_RESET);
-                matrix_io_delay();
-                writePinHigh(NRF_RESET);
+
+                    writePinLow(NRF_RESET);
+                    matrix_io_delay();
+                    writePinHigh(NRF_RESET);
+
+                    reset_battery();
+            } else {
+                // Do something else when release
+            }
+            return false;
+        case GET_VER:
+            if (record->event.pressed) {
+                // Do something when pressed
+                tap_code(KC_0);
+            } else {
+                // Do something else when release
+            }
+            return false;
+        case SEL_BLE:
+            if (record->event.pressed) {
+                // Do something when pressed
+                blueism_select_ble();
+            } else {
+                // Do something else when release
+            }
+            return false;
+        case SEL_2G4:
+            if (record->event.pressed) {
+                // Do something when pressed
+                blueism_select_2g4();
             } else {
                 // Do something else when release
             }
