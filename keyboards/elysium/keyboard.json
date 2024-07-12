@@ -2,7 +2,7 @@
     "manufacturer": "Helix Lab",
     "keyboard_name": "Elysium",
     "maintainer": "luantty2",
-    "bootloader": "tinyuf2",
+    "bootloader": "stm32-dfu",
     "diode_direction": "ROW2COL",
     "features": {
         "bootmagic": true,
