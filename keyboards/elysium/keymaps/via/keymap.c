@@ -19,3 +19,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  GU_TOGG,            AG_TOGG,  _______,  _______,  _______,  _______,  _______,  _______
     ),
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case QK_BOOT:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    eeconfig_init();
+                    reset_keyboard();
+                }
+            } else {
+                // Do something else when release
+            }
+            return false;
+        case GU_TOGG:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    keymap_config.no_gui = !keymap_config.no_gui;
+                    eeconfig_update_keymap(keymap_config.raw);
+                }
+            } else {
+            }
+            return false;
+        case AG_TOGG:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    keymap_config.swap_lalt_lgui = !keymap_config.swap_lalt_lgui;
+                    keymap_config.swap_ralt_rgui = keymap_config.swap_lalt_lgui;
+                    eeconfig_update_keymap(keymap_config.raw);
+                }
+            } else {
+            }
+            return false;
+        default:
+            return true; // Process all other keyzcodes normally
+    }
+}
