@@ -3,13 +3,14 @@
     "keyboard_name": "Elysium",
     "maintainer": "luantty2",
     "bootloader": "tinyuf2",
+    "debounce": 3,
     "diode_direction": "ROW2COL",
     "features": {
         "bootmagic": true,
         "command": false,
         "console": false,
         "extrakey": true,
-        "mousekey": true,
+        "mousekey": false,
         "nkro": true
     },
     "matrix_pins": {
