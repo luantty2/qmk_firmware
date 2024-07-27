@@ -10,7 +10,9 @@
 #include "debounce.h"
 #include "wireless_sys.h"
 #include "outputselect.h"
+#ifdef RGB_MATRIX_ENABLE
 #include "rgb_matrix.h"
+#endif
 
 #define BOARD_PM
 
@@ -307,8 +309,11 @@ void housekeeping_task_kb(void) {
     //     lpm_timer_reset();
     // }
 
-
-    if (!readPin(VBUS_DETECT_PIN) && !lpm_any_matrix_action() && lpm_time_up && !rgb_matrix_is_enabled()) {
+    if (!readPin(VBUS_DETECT_PIN) && !lpm_any_matrix_action() && lpm_time_up
+#ifdef RGB_MATRIX_ENABLE
+    && !rgb_matrix_is_enabled()
+#endif
+    ) {
         enter_power_mode_stop1();
     }
 }

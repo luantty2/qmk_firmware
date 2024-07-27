@@ -52,7 +52,7 @@ void blueism_init(void) {
 
     setPinInput(VBUS_DETECT_PIN);
 #ifdef HIDS_LEDS_ENABLE
-    hid_leds_init();
+    // hid_leds_init();
 #endif
     // setPinOutput(NRF_RESET);
     // writePinHigh(NRF_RESET);

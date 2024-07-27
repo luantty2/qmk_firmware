@@ -26,6 +26,12 @@
 #define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 #define RGB_MATRIX_KEYPRESSES
 
+// #define I2C1_TIMINGR_PRESC 2U
+// #define I2C1_TIMINGR_SCLDEL 1U
+// #define I2C1_TIMINGR_SDADEL 0U
+// #define I2C1_TIMINGR_SCLH 9U
+// #define I2C1_TIMINGR_SCLL 26U
+
 
 /*
  * Feature disable options

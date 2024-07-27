@@ -6,7 +6,7 @@
 #include "hid_leds.h"
 
 #ifdef RGB_MATRIX_ENABLE
-const is31_led PROGMEM g_is31_leds[IS31FL3733_LED_COUNT] = {
+const is31fl3733_led_t PROGMEM g_is31fl3733_leds[IS31FL3733_LED_COUNT] = {
     {0, SW7_CS11, SW8_CS11, SW9_CS11},
     {0, SW7_CS8, SW8_CS8, SW9_CS8},
     {0, SW7_CS3, SW8_CS3, SW9_CS3},
