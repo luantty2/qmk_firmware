@@ -13,13 +13,16 @@ enum keycodes{
     GET_VER,
     SEL_BLE,
     SEL_2G4,
+    ADVANCED_UNPAIR,
 };
 
 #define BT_UNPR BLUETOOTH_UNPAIR
 #define DG_UNPR DONGLE_UNPAIR
 #define M_RESET MODULE_RESET
+#define AVD_UNP ADVANCED_UNPAIR
 
 static char bat_str[2];
+static uint16_t adv_unpair_key_timer;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
@@ -33,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         QK_BOOT,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         SEL_BLE,  _______,  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  M_RESET,
         SEL_2G4,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-        _______,  _______,  _______,  BT_UNPR,  _______,  GET_VER,  BAT_LVL,  BAT_LVL,  _______,  _______,  _______,  _______,  _______, _______,  _______,
+        _______,  _______,  _______,  AVD_UNP,  _______,  GET_VER,  BAT_LVL,  BAT_LVL,  _______,  _______,  _______,  _______,  _______, _______,  _______,
         _______,  GU_TOGG,  _______,  AG_TOGG,  _______,  _______,  _______,  _______,  _______,  _______
     ),
 };
@@ -151,6 +154,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     eeconfig_update_keymap(keymap_config.raw);
                 }
             } else {
+            }
+            return false;
+        case AVD_UNP:
+            if (record->event.pressed) {
+                adv_unpair_key_timer = timer_read();
+            } else {
+                if (timer_elapsed(adv_unpair_key_timer) >= 5000) {
+                    blueism_dongle_button_unpair();
+                } else {
+                    blueism_ble_button_unpair();
+                }
+                adv_unpair_key_timer = 0;
+                // if(!adv_unpair_hold_triggered) {
+                //     blueism_ble_button_unpair();
+                // }
+                // adv_unpair_hold_triggered = false;
+                // chVTReset(&adv_unpair_key_timer);
             }
             return false;
         // case KEYLOCK:
