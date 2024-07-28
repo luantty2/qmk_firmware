@@ -1,0 +1,34 @@
+{
+    "manufacturer": "weimao",
+    "keyboard_name": "6y_watch",
+    "maintainer": "luantty2",
+    "bootloader": "stm32-dfu",
+    "diode_direction": "COL2ROW",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": true,
+        "extrakey": false,
+        "mousekey": false,
+        "nkro": false
+    },
+    "matrix_pins": {
+        "cols": ["B5", "B6"],
+        "rows": ["B4"]
+    },
+    "processor": "STM32L432",
+    "url": "",
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x1203",
+        "vid": "0x0818"
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                {"matrix": [0, 0], "x": 0, "y": 0},
+                {"matrix": [0, 1], "x": 1, "y": 0}
+            ]
+        }
+    }
+}

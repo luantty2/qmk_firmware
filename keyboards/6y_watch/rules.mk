@@ -1,0 +1,3 @@
+I2C_DRIVER_REQUIRED = yes
+SRC += \
+	ch455x.c
