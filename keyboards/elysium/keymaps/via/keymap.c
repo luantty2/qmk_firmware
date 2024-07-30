@@ -173,6 +173,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // chVTReset(&adv_unpair_key_timer);
             }
             return false;
+        // case NK_TOGG:
+        //     if (record->event.pressed) {
+        //         if(keymap_config.nkro){
+        //             dprintf("nk on");
+        //         }
+        //     } else {
+        //     }
+        //     return false;
         // case KEYLOCK:
         //     static host_driver_t *host_driver = 0;
 

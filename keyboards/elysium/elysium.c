@@ -114,6 +114,7 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
             hsv.h -= 191;
         }
         hsv.h += 64;
+        hsv.s = 200;
         rgb = hsv_to_rgb(hsv);
         for (uint8_t i = led_min; i < led_max; i++) {
             if ((g_led_config.flags[i] >> 3) & 1) {

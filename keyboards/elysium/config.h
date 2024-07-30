@@ -25,9 +25,12 @@
 #define DRIVER_SYNC_1 0b01
 #define DRIVER_SYNC_2 0b10
 
-#define RGB_MATRIX_DEFAULT_SPD 64
+#define RGB_MATRIX_DEFAULT_SPD 32
 #define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 #define RGB_MATRIX_KEYPRESSES
+
+// #define ISSI_SCAL_RED 0x96
+// #define ISSI_SCAL_GREEN 0xC8
 
 /*
  * Feature disable options

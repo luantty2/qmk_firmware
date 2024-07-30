@@ -168,6 +168,7 @@ void rgb_matrix_reload_from_eeprom(void);
 
 void        rgb_matrix_set_suspend_state(bool state);
 bool        rgb_matrix_get_suspend_state(void);
+bool        rgb_matrix_get_suspend_state_blueism(void);
 void        rgb_matrix_toggle(void);
 void        rgb_matrix_toggle_noeeprom(void);
 void        rgb_matrix_enable(void);
