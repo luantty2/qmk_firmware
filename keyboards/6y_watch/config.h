@@ -8,6 +8,11 @@
 #define I2C1_SDA_PIN A10
 #define I2C1_SDA_PAL_MODE 4
 
+// #define I2C1_TIMINGR_PRESC  0U
+// #define I2C1_TIMINGR_SCLDEL 3U
+// #define I2C1_TIMINGR_SDADEL 1U
+// #define I2C1_TIMINGR_SCLH   3U
+// #define I2C1_TIMINGR_SCLL   9U
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.

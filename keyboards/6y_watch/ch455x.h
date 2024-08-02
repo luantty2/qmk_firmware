@@ -9,7 +9,11 @@
 #define CH455X_REG_DIG_2 0x6A
 #define CH455X_REG_DIG_3 0x6C
 #define CH455X_REG_DIG_4 0x6E
+#define CH455X_REG_INC(x) (CH455X_REG_DIG_4 - 2 * x)
+#define CH455X_REG_DEC(x) (CH455X_REG_DIG_1 + 2 * x)
 #define CH455X_REG_KEY 0X4F
 
 void ch455x_init(void);
+void ch455x_sleep(void);
+void ch455x_wakeup(void);
 void ch455x_write(uint8_t reg, uint8_t *data);

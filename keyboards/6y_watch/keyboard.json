@@ -1,9 +1,9 @@
 {
     "manufacturer": "weimao",
-    "keyboard_name": "6y_watch",
+    "keyboard_name": "pig watch",
     "maintainer": "luantty2",
     "bootloader": "stm32-dfu",
-    "diode_direction": "COL2ROW",
+    "diode_direction": "ROW2COL",
     "features": {
         "bootmagic": true,
         "command": false,

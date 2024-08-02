@@ -4,6 +4,15 @@
 
 #include_next <mcuconf.h>
 
+#undef STM32_LSE_ENABLED
+#define STM32_LSE_ENABLED TRUE
+
+// #undef STM32_LSI_ENABLED
+// #define STM32_LSI_ENABLED TRUE
+
+#undef STM32_RTCSEL
+#define STM32_RTCSEL STM32_RTCSEL_LSE
+
 #undef STM32_PLLM_VALUE
 #define STM32_PLLM_VALUE 2
 
