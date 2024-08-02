@@ -72,6 +72,7 @@ last_hit_t g_last_hit_tracker;
 
 // internals
 static bool            suspend_state     = false;
+static bool            suspend_state_blueism = false;
 static uint8_t         rgb_last_enable   = UINT8_MAX;
 static uint8_t         rgb_last_effect   = UINT8_MAX;
 static effect_params_t rgb_effect_params = {0, LED_FLAG_ALL, false};
@@ -361,6 +362,8 @@ void rgb_matrix_task(void) {
 #endif // RGB_MATRIX_TIMEOUT > 0
                              false;
 
+    suspend_state_blueism = suspend_backlight;
+
     uint8_t effect = suspend_backlight || !rgb_matrix_config.enable ? 0 : rgb_matrix_config.mode;
 
     switch (rgb_task_state) {
@@ -480,6 +483,10 @@ void rgb_matrix_set_suspend_state(bool state) {
 
 bool rgb_matrix_get_suspend_state(void) {
     return suspend_state;
+}
+
+bool rgb_matrix_get_suspend_state_blueism(void) {
+    return suspend_state_blueism;
 }
 
 void rgb_matrix_toggle_eeprom_helper(bool write_to_eeprom) {

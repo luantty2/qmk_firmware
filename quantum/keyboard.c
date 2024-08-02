@@ -142,6 +142,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 static uint32_t last_input_modification_time = 0;
+
+void reset_last_input_modification_time(void){
+    last_input_modification_time = 0;
+}
+
 uint32_t        last_input_activity_time(void) {
     return last_input_modification_time;
 }
