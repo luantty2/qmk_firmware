@@ -5,7 +5,7 @@
 #define HAL_USE_SERIAL TRUE
 #define HAL_USE_I2C TRUE
 #define PAL_USE_CALLBACKS TRUE
-#define SERIAL_BUFFERS_SIZE 256
+#define SERIAL_BUFFERS_SIZE 64
 #define PAL_USE_WAIT TRUE
 
 #include_next <halconf.h>

@@ -17,7 +17,7 @@
 #    define BLUEISM_UART_SEND_INTERVAL_MS 5
 #endif
 #ifndef SEND_BUFFER_SIZE
-#    define SEND_BUFFER_SIZE 256
+#    define SEND_BUFFER_SIZE
 #endif
 
 // #undef SD1_CR2
@@ -262,7 +262,7 @@ void blueism_task(void) {
             if (readPin(SLEEP_STATUS_PIN)) { // if sleeping
                 setPinOutput(WAKEUP_PIN);
                 writePinLow(WAKEUP_PIN);
-                // wait_ms(100);
+                // wait_ms(20);
                 matrix_io_delay();
                 /*Do not send here, will stuck the BT module */
                 // uart_transmit(data, sizeof(data));

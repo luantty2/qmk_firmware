@@ -10,9 +10,7 @@
 #include "debounce.h"
 #include "wireless_sys.h"
 #include "outputselect.h"
-#ifdef RGB_MATRIX_ENABLE
 #include "rgb_matrix.h"
-#endif
 
 #define BOARD_PM
 
@@ -100,14 +98,17 @@ static inline void lpm_wakeup(void) {
     timer_init();
     chSysUnlock();
 
+    // lpm_timer_reset();
+
     if (readPin(VBUS_DETECT_PIN)) {
         PWR->CR2 |= PWR_CR2_USV;
         usb_start(&USBD1);
         usbConnectBus(&USBD1); // this fixes caps lock
-        wait_ms(500);          // Do need to wait here, or "usb_connected_state" will be false.
-        if (usb_connected_state()) {
-            set_output(OUTPUT_USB);
-        }
+        // wait_ms(500);          // Do need to wait here, or "usb_connected_state" will be false.
+        // if (usb_connected_state()) {
+        // if(readPin(VBUS_DETECT_PIN)){
+        set_output(OUTPUT_USB);
+        // }
     }
     /* Disable all wake up pins */
     for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
@@ -121,6 +122,15 @@ static inline void lpm_wakeup(void) {
 #    ifdef HIDS_LEDS_ENABLE
     enable_leds_cb();
 #    endif
+
+    if(rgb_matrix_is_enabled()){
+        reset_last_input_modification_time();
+        writePinHigh(RGB_SHUTDOWN_PIN);
+        // rgb_matrix_set_suspend_state(false);
+    }
+
+    // lpm_timer_reset();
+
 
     // if (usb_connected_state()) {
     // if (readPin(VBUS_DETECT_PIN)) {
@@ -190,7 +200,7 @@ void enter_power_mode_stop1(void) {
     __WFI();
 
     lpm_wakeup();
-    lpm_timer_reset();
+    // lpm_timer_reset();
     // pm_reset();
     debounce_free();
     matrix_init();
@@ -303,18 +313,23 @@ void housekeeping_task_kb(void) {
     //     if(lpm_any_matrix_action() ){
     //     dprintf("matrix, do not sleep\n");
     //     }
-    //     if(rgb_matrix_is_enabled()){
+    //     if(~_matrix_is_enabled()){
     //     dprintf("rgb, do not sleep\n");
     //     }
     //     lpm_timer_reset();
     // }
-
-    if (!readPin(VBUS_DETECT_PIN) && !lpm_any_matrix_action() && lpm_time_up
-#ifdef RGB_MATRIX_ENABLE
-    && !rgb_matrix_is_enabled()
-#endif
-    ) {
-        enter_power_mode_stop1();
+    if (!readPin(VBUS_DETECT_PIN) && !lpm_any_matrix_action() && lpm_time_up) {
+        // if (!readPin(VBUS_DETECT_PIN) && !lpm_any_matrix_action() && lpm_time_up && !rgb_matrix_is_enabled()) {
+        // if (!rgb_matrix_is_enabled() || (rgb_matrix_is_enabled() && rgb_matrix_get_suspend_state())) {
+        //     enter_power_mode_stop1();
+        // }
+        if (!rgb_matrix_is_enabled()) {
+            enter_power_mode_stop1();
+        }
+        if (rgb_matrix_is_enabled() && rgb_matrix_get_suspend_state_blueism()) {
+            writePinLow(RGB_SHUTDOWN_PIN);
+            enter_power_mode_stop1();
+        }
     }
 }
 

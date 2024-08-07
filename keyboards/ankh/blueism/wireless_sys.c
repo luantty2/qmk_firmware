@@ -46,14 +46,17 @@ void palCallback_vbus_sense(void *arg) {
         // }
 
 //--
-        // clear_keyboard();
+        clear_keyboard();
 
         // PWR->CR2 |= PWR_CR2_USV;
         // usb_start(&USBD1);
         // usbConnectBus(&USBD1);
 
         // // usb_start(&USBD1);
-        // set_output(OUTPUT_USB);
+        PWR->CR2 |= PWR_CR2_USV;
+        usb_start(&USBD1);
+        usbConnectBus(&USBD1); // this fixes caps lock
+        set_output(OUTPUT_USB);
 //--
     } else {
         clear_keyboard();

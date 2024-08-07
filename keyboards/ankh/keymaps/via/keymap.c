@@ -22,7 +22,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NUM,   _______,  _______,  _______,
         _______,  _______,  _______,  _______,
         _______,  _______,  _______,
-        RGB_TOG,  RGB_MOD,  RGB_VAI,  BT_UNPR,
+        RGB_TOG,  RGB_MOD,  _______,  BT_UNPR,
         _______,  _______
     ),
 };
