@@ -1,0 +1,12 @@
+// Copyright 2024 weimao (@luantty2)
+// SPDX-License-Identifier: GPL-2.0-or-later
+#include "quantum.h"
+
+void keyboard_post_init_kb(void) {
+    debug_enable   = true;
+    debug_matrix   = false;
+    debug_keyboard = false;
+    debug_mouse    = false;
+
+    keyboard_post_init_user();
+}
