@@ -17,7 +17,7 @@
 #    define BLUEISM_UART_SEND_INTERVAL_MS 5
 #endif
 #ifndef SEND_BUFFER_SIZE
-#    define SEND_BUFFER_SIZE
+#    define SEND_BUFFER_SIZE 256
 #endif
 
 // #undef SD1_CR2
