@@ -1,0 +1,33 @@
+{
+    "manufacturer": "weimao",
+    "keyboard_name": "st7789_2040test",
+    "maintainer": "luantty2",
+    "development_board": "promicro_rp2040",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": false,
+        "extrakey": false,
+        "mousekey": false,
+        "nkro": false,
+        "quantum_painter": true
+    },
+    "matrix_pins": {
+        "direct": [
+            ["GP29"]
+        ]
+    },
+    "url": "",
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x093D",
+        "vid": "0x484C"
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                {"matrix": [0, 0], "x": 0, "y": 0}
+            ]
+        }
+    }
+}
