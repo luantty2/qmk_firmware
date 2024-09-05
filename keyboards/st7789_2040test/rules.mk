@@ -1,2 +1,4 @@
 QUANTUM_PAINTER_DRIVERS += st7789_spi
 QUANTUM_PAINTER_LVGL_INTEGRATION = yes
+
+include keyboards/st7789_2040test/ui/ui.mk
