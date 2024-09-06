@@ -1,0 +1,34 @@
+{
+    "manufacturer": "weimao",
+    "keyboard_name": "flowcontrol",
+    "maintainer": "luantty2",
+    "development_board": "blackpill_f411",
+    "diode_direction": "COL2ROW",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": false,
+        "extrakey": false,
+        "mousekey": false,
+        "nkro": false
+    },
+    "matrix_pins": {
+        "direct":
+        [
+            ["A0"]
+        ]
+    },
+    "url": "",
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x0021",
+        "vid": "0x12CD"
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                {"matrix": [0, 0], "x": 0, "y": 0}
+            ]
+        }
+    }
+}
