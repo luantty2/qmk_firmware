@@ -157,6 +157,25 @@ void blueism_unpair(void) {
     }
 }
 
+void blueism_id(uint8_t id) {
+    id = MAX(MIN(id, 3U), 0U);
+    blueism_send_status_t ret;
+    switch (id) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            ret = blueism_send_cmd(CMD_BT_ID, &id, sizeof(id));
+            break;
+        default:
+            break;
+    }
+    if (ret != BLUEISM_SEND_STATUS_SUCCESS) {
+        dprintf("Failed to send id command\n");
+        send_err_cnt++;
+    }
+}
+
 void blueism_task(void) {
     static uint32_t send_timer;
     // send_timer = timer_read32();
