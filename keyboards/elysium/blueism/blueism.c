@@ -81,10 +81,10 @@ void blueism_init(void) {
 
 void eeconfig_init_kb(void) {
     mode_config.raw    = 0;
-    mode_config.is_ble = true;           // We want this enabled by default
+    mode_config.is_ble = false;           // We want this enabled by default
     eeconfig_update_kb(mode_config.raw); // Write default value to EEPROM now
 
-    writePinHigh(WIRELESS_MODE_SEL_PIN);
+    writePinLow(WIRELESS_MODE_SEL_PIN);
 }
 
 blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t payload_len) {
@@ -239,6 +239,25 @@ void blueism_select_2g4(void) {
     mode_config.is_ble = false;
     eeconfig_update_kb(mode_config.raw);
     writePinLow(WIRELESS_MODE_SEL_PIN);
+}
+
+void blueism_select_ble_id(uint8_t id) {
+    id = MAX(MIN(id, 3U), 0U);
+    blueism_send_status_t ret;
+    switch (id) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            ret = blueism_send_cmd(CMD_BT_ID, &id, sizeof(id));
+            break;
+        default:
+            break;
+    }
+    if (ret != BLUEISM_SEND_STATUS_SUCCESS) {
+        dprintf("Failed to send id command\n");
+        send_err_cnt++;
+    }
 }
 
 void blueism_task(void) {

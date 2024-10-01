@@ -13,6 +13,7 @@ typedef int8_t blueism_send_status_t;
 #define CMD_REPORT_CONSUMER 0x32
 #define CMD_REPORT_MOUSE 0x34
 #define CMD_BT_BAT_UPDATE 0x35
+#define CMD_BT_ID 0x29
 
 typedef struct {
     uint8_t mods;
@@ -56,3 +57,4 @@ void                  blueism_ble_button_unpair(void);
 void                  blueism_dongle_button_unpair(void);
 void                  blueism_select_ble(void);
 void                  blueism_select_2g4(void);
+void                  blueism_select_ble_id(uint8_t id);
