@@ -14,10 +14,6 @@ enum keycodes{
     SEL_BLE,  //Deprecated
     SEL_2G4,  //Deprecated
     ADVANCED_UNPAIR,
-    // BT_ID_1,
-    // BT_ID_2,
-    // BT_ID_3,
-    // BT_ID_4,
 };
 
 #define BT_UNPR BLUETOOTH_UNPAIR
@@ -173,59 +169,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     blueism_ble_button_unpair();
                 }
                 adv_unpair_key_timer = 0;
-                // if(!adv_unpair_hold_triggered) {
-                //     blueism_ble_button_unpair();
-                // }
-                // adv_unpair_hold_triggered = false;
-                // chVTReset(&adv_unpair_key_timer);
             }
             return false;
-        // case BT_ID_1:
-        //     if (record->event.pressed) {
-        //         blueism_select_ble();
-        //         blueism_select_ble_id(0);
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
-        // case BT_ID_2:
-        //     if (record->event.pressed) {
-        //         blueism_select_ble();
-        //         blueism_select_ble_id(1);
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
-        // case BT_ID_3:
-        //     if (record->event.pressed) {
-        //         blueism_select_ble();
-        //         blueism_select_ble_id(2);
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
-        // case BT_ID_4:
-        //     if (record->event.pressed) {
-        //         blueism_select_ble();
-        //         blueism_select_ble_id(3);
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
-        // case KC_F1:
-        //     if (record->event.pressed) {
-        //         if (get_mods() & MOD_MASK_SHIFT) {
-        //             // blueism_select_ble();
-        //             // wait_ms(100);
-        //             // blueism_select_ble_id(0);
-        //             blueism_select_ble();
-        //         } else {
-        //             tap_code(KC_F1);
-        //         }
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
         case KC_F1:
             if (record->event.pressed) {
                 sel_ble_key_timer = timer_read();
@@ -236,62 +181,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_F1);
                 }
                 sel_ble_key_timer = 0;
-                // if(!adv_unpair_hold_triggered) {
-                //     blueism_ble_button_unpair();
-                // }
-                // adv_unpair_hold_triggered = false;
-                // chVTReset(&adv_unpair_key_timer);
             }
             return false;
-        // case KC_F2:
-        //     if (record->event.pressed) {
-        //         if (get_mods() & MOD_MASK_SHIFT) {
-        //             blueism_select_ble();
-        //             wait_ms(100);
-        //             blueism_select_ble_id(1);
-        //         } else {
-        //             tap_code(KC_F2);
-        //         }
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
-        // case KC_F3:
-        //     if (record->event.pressed) {
-        //         if (get_mods() & MOD_MASK_SHIFT) {
-        //             blueism_select_ble();
-        //             wait_ms(100);
-        //             blueism_select_ble_id(2);
-        //         } else {
-        //             tap_code(KC_F3);
-        //         }
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
-        // case KC_F4:
-        //     if (record->event.pressed) {
-        //         if (get_mods() & MOD_MASK_SHIFT) {
-        //             blueism_select_ble();
-        //             wait_ms(100);
-        //             blueism_select_ble_id(3);
-        //         } else {
-        //             tap_code(KC_F4);
-        //         }
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
-        // case KC_F2:
-        //     if (record->event.pressed) {
-        //         if (get_mods() & MOD_MASK_SHIFT) {
-        //             clear_keyboard();
-        //             blueism_select_2g4();
-        //         }
-        //     } else {
-        //         // Do something else when release
-        //     }
-        //     return false;
         case KC_F2:
             if (record->event.pressed) {
                 sel_2g4_key_timer = timer_read();
@@ -302,36 +193,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_F2);
                 }
                 sel_2g4_key_timer = 0;
-                // if(!adv_unpair_hold_triggered) {
-                //     blueism_ble_button_unpair();
-                // }
-                // adv_unpair_hold_triggered = false;
-                // chVTReset(&adv_unpair_key_timer);
             }
             return false;
-        // case NK_TOGG:
-        //     if (record->event.pressed) {
-        //         if(keymap_config.nkro){
-        //             dprintf("nk on");
-        //         }
-        //     } else {
-        //     }
-        //     return false;
-        // case KEYLOCK:
-        //     static host_driver_t *host_driver = 0;
-
-        //     if (record->event.pressed) {
-        //         if (host_get_driver()) {
-        //             host_driver = host_get_driver();
-        //             clear_keyboard();
-        //             host_set_driver(0);
-        //             host_driver_disabled = true;
-        //         } else {
-        //             host_set_driver(host_driver);
-        //             host_driver_disabled = false;
-        //         }
-        //     }
-        //     return false;
         default:
             return true; // Process all other keyzcodes normally
     }

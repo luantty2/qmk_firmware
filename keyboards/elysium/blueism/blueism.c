@@ -94,23 +94,8 @@ blueism_send_status_t blueism_send_cmd(uint8_t cmd, uint8_t *payload, uint8_t pa
     }
     uint8_t packet[BLUEISM_UART_PACKET_LEN] = {0};
 
-    // Calculate checksum
-    // uint16_t checksum = 0;
-    // checksum += 0xAA;
-    // checksum += cmd;
-    // checksum += payload_len;
-    // for (uint8_t i = 0; i < payload_len; i++) {
-    //     checksum += payload[i];
-    // }
-    // checksum -= 0x55;
-
-    // Fill packet
-    // packet[0] = 0xAA;
     packet[0] = cmd;
-    // packet[2] = payload_len;
     memcpy(packet + 1, payload, payload_len);
-    // packet[BLUEISM_UART_PACKET_LEN - 2] = checksum & 0xFF;
-    // packet[BLUEISM_UART_PACKET_LEN - 1] = '\n';
 
 #ifdef DEBUG_BLUEISM_UART_PACKET
     for (uint8_t i = 0; i < BLUEISM_UART_PACKET_LEN; i++) {
@@ -262,8 +247,6 @@ void blueism_select_ble_id(uint8_t id) {
 
 void blueism_task(void) {
     static uint32_t send_timer;
-    // send_timer = timer_read32();
-    // uint32_t timer_now = timer_read();
     if (!ringBufferEmpty(&send_buffer) && timer_elapsed32(send_timer) >= BLUEISM_UART_SEND_INTERVAL_MS) {
         send_timer = timer_read32();
 // #ifdef BOARD_PM
@@ -277,11 +260,9 @@ void blueism_task(void) {
             ringBufferClear(&send_buffer);
         } else {
             uint8_t data[BLUEISM_UART_PACKET_LEN];
-            // ringBufferGetMultiple(&send_buffer, data, sizeof(data));
             if (readPin(SLEEP_STATUS_PIN)) { // if sleeping
                 setPinOutput(WAKEUP_PIN);
                 writePinLow(WAKEUP_PIN);
-                // wait_ms(100);
                 matrix_io_delay();
                 /*Do not send here, will stuck the BT module */
                 // uart_transmit(data, sizeof(data));
@@ -294,20 +275,6 @@ void blueism_task(void) {
                 // dprintf("LOW, not sleeping\n");
             }
         }
-        // send_timer = timer_now;
     }
 }
 
-// static uint32_t key_timer;
-
-// void housekeeping_task_kb(void){
-//     uint32_t timer_now = timer_read();
-//     if ((TIMER_DIFF_32(timer_now, key_timer) >= 500)) {
-//         if (!readPin(A14)) {
-//             dprintf("LOW, not sleeping\n");
-//         }else{
-//             dprintf("High, sleeping\n");
-//         }
-//         key_timer = timer_now;
-//     }
-// }
