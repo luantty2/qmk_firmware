@@ -21,7 +21,6 @@ static uint8_t bat_lvl;
 
 void battery_init(void) {
     max1704x_init();
-    // max1704x_set_vreset(MAX1704X_VRESET);
     wait_ms(MAX1704X_INIT_DELAY_MS);
 
     uint8_t soc_val[2];
