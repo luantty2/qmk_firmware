@@ -47,7 +47,10 @@ endif
 
 ifeq ($(strip $(NKRO_ENABLE)), yes)
     ifeq ($(strip $(BLUETOOTH_ENABLE)), yes)
-        $(info NKRO is not currently supported with Bluetooth, and has been disabled.)
+        # $(info NKRO is not currently supported with Bluetooth, and has been disabled.)
+        $(info NKRO is experimentally enabled with Bluetooth.)
+        OPT_DEFS += -DNKRO_ENABLE
+        SHARED_EP_ENABLE = yes
     else
         OPT_DEFS += -DNKRO_ENABLE
         SHARED_EP_ENABLE = yes

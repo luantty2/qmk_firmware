@@ -10,7 +10,7 @@
         "console": false,
         "extrakey": true,
         "mousekey": false,
-        "nkro": false,
+        "nkro": true,
         "rgb_matrix": true
     },
     "rgb_matrix": {

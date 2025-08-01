@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "host.h"
 #include "util.h"
 #include "debug.h"
+#include "rgb_matrix.h"
 
 #ifdef DIGITIZER_ENABLE
 #    include "digitizer.h"
@@ -76,8 +77,10 @@ void host_keyboard_send(report_keyboard_t *report) {
 #ifdef BLUETOOTH_ENABLE
     if (where_to_send() == OUTPUT_BLUETOOTH) {
         bluetooth_send_keyboard(report);
+        // rgb_matrix_set_color(1, 255,255,255);
         return;
     }
+
 #endif
 
     if (!driver) return;

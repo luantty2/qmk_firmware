@@ -21,6 +21,9 @@
 #include "debug.h"
 #include "util.h"
 #include <string.h>
+#ifdef BLUETOOTH_ENABLE
+#    include "outputselect.h"
+#endif
 
 #ifdef RING_BUFFERED_6KRO_REPORT_ENABLE
 #    define RO_ADD(a, b) ((a + b) % KEYBOARD_REPORT_KEYS)
@@ -41,7 +44,7 @@ uint8_t has_anykey(void) {
     uint8_t* p   = keyboard_report->keys;
     uint8_t  lp  = sizeof(keyboard_report->keys);
 #ifdef NKRO_ENABLE
-    if (keyboard_protocol && keymap_config.nkro) {
+    if (keyboard_protocol && keymap_config.nkro && where_to_send() == OUTPUT_USB) {
         p  = nkro_report->bits;
         lp = sizeof(nkro_report->bits);
     }
@@ -58,7 +61,7 @@ uint8_t has_anykey(void) {
  */
 uint8_t get_first_key(void) {
 #ifdef NKRO_ENABLE
-    if (keyboard_protocol && keymap_config.nkro) {
+    if (keyboard_protocol && keymap_config.nkro && where_to_send() == OUTPUT_USB) {
         uint8_t i = 0;
         for (; i < NKRO_REPORT_BITS && !nkro_report->bits[i]; i++)
             ;
@@ -89,7 +92,7 @@ bool is_key_pressed(uint8_t key) {
         return false;
     }
 #ifdef NKRO_ENABLE
-    if (keyboard_protocol && keymap_config.nkro) {
+    if (keyboard_protocol && keymap_config.nkro && where_to_send() == OUTPUT_USB) {
         if ((key >> 3) < NKRO_REPORT_BITS) {
             return nkro_report->bits[key >> 3] & 1 << (key & 7);
         } else {
@@ -243,7 +246,7 @@ void del_key_bit(report_nkro_t* nkro_report, uint8_t code) {
  */
 void add_key_to_report(uint8_t key) {
 #ifdef NKRO_ENABLE
-    if (keyboard_protocol && keymap_config.nkro) {
+    if (keyboard_protocol && keymap_config.nkro && where_to_send() == OUTPUT_USB) {
         add_key_bit(nkro_report, key);
         return;
     }
@@ -257,7 +260,7 @@ void add_key_to_report(uint8_t key) {
  */
 void del_key_from_report(uint8_t key) {
 #ifdef NKRO_ENABLE
-    if (keyboard_protocol && keymap_config.nkro) {
+    if (keyboard_protocol && keymap_config.nkro && where_to_send() == OUTPUT_USB) {
         del_key_bit(nkro_report, key);
         return;
     }
@@ -272,7 +275,7 @@ void del_key_from_report(uint8_t key) {
 void clear_keys_from_report(void) {
     // not clear mods
 #ifdef NKRO_ENABLE
-    if (keyboard_protocol && keymap_config.nkro) {
+    if (keyboard_protocol && keymap_config.nkro && where_to_send() == OUTPUT_USB) {
         memset(nkro_report->bits, 0, sizeof(nkro_report->bits));
         return;
     }
