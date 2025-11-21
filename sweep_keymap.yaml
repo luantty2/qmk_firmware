@@ -1,0 +1,78 @@
+layout: {qmk_keyboard: elysium, layout_name: LAYOUT}
+layers:
+  L0:
+  - [ESC, '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', BSPC]
+  - [PGUP, TAB, Q, W, E, R, T, Y, U, I, O, P, '[', ']', \]
+  - [PGDN, CAPS, A, S, D, F, G, H, J, K, L, ;, '''', ENT, END]
+  - [LSFT, Z, X, C, V, B, B, N, M, ',', ., /, UP, RSFT, LCTL]
+  - [LGUI, DG UNPR, LALT, SPC, SPC, L1, LEFT, DOWN, RIGHT]
+  L1:
+  - - QK BOOT
+    - {t: ▽, type: trans}
+    - F1
+    - F2
+    - F3
+    - F4
+    - F5
+    - F6
+    - F7
+    - F8
+    - F9
+    - F10
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - RGB TOG
+    - RGB MOD
+    - RGB HUI
+    - RGB SAI
+    - RGB VAI
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - M RESET
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - AVD UNP
+    - {t: ▽, type: trans}
+    - GET VER
+    - BAT LVL
+    - BAT LVL
+    - NK TOGG
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - GU TOGG
+    - {t: ▽, type: trans}
+    - AG TOGG
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {type: held}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
