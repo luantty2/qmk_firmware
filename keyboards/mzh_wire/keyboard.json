@@ -1,0 +1,33 @@
+{
+    "manufacturer": "weimao",
+    "keyboard_name": "mzh_wire",
+    "maintainer": "luantty2",
+    "development_board": "blackpill_f411",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": true,
+        "extrakey": false,
+        "mousekey": false,
+        "nkro": false,
+        "midi": true
+    },
+    "matrix_pins": {
+        "direct": [
+            ["A0"]
+        ]
+    },
+    "url": "",
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x0008",
+        "vid": "0xC80A"
+    },
+    "layouts": {
+        "LAYOUT_ortho_1x1": {
+            "layout": [
+                {"matrix": [0, 0], "x": 0, "y": 0}
+            ]
+        }
+    }
+}
