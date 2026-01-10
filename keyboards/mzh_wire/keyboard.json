@@ -14,7 +14,7 @@
     },
     "matrix_pins": {
         "direct": [
-            ["A0"]
+            ["B13", "B3", "B15", "A10", "A8"]
         ]
     },
     "url": "",
@@ -24,9 +24,13 @@
         "vid": "0xC80A"
     },
     "layouts": {
-        "LAYOUT_ortho_1x1": {
+        "LAYOUT": {
             "layout": [
-                {"matrix": [0, 0], "x": 0, "y": 0}
+                {"matrix": [0, 0], "x": 0, "y": 0},
+                {"matrix": [0, 1], "x": 1, "y": 0},
+                {"matrix": [0, 2], "x": 2, "y": 0},
+                {"matrix": [0, 3], "x": 3, "y": 0},
+                {"matrix": [0, 4], "x": 4, "y": 0}
             ]
         }
     }
