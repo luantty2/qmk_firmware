@@ -1,0 +1,14 @@
+// Copyright 2026 weimao (@luantty2)
+// SPDX-License-Identifier: GPL-2.0-or-later
+#pragma once
+
+#define BLUEISM_UART_BAUDRATE 460800
+#define BLUEISM_DEFAULT_OUTPUT OUTPUT_BLUETOOTH
+
+#define BLUEISM_NRF_WAKEUP_PIN A4
+#define BLUEISM_NRF_SLEEP_STATUS_PIN A5
+#define BLUEISM_NRF_WAKE_PULSE_MS 1
+#define BLUEISM_NRF_WAKE_DELAY_MS 50
+
+#define CAPS_LED_OUTPUT_PIN C13
+#define CAPS_LED_ACTIVE_LOW 1
